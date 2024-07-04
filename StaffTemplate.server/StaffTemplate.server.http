@@ -1,0 +1,6 @@
+@StaffTemplate.server_HostAddress = http://localhost:5004
+
+GET {{StaffTemplate.server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
