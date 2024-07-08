@@ -8,23 +8,38 @@ namespace StaffTemplate.server.Models
     {
         [Key, ForeignKey("Employee")]
         public int SocialSecurityNumber { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "The field {0} is required.")]
         public DateTime HiringDate { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "The field {0} is required.")]
+        [StringLength(100, ErrorMessage = "The field {0} must be a string with a maximum length of {1} characters.")]
         public string Department { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "The field {0} is required.")]
+        [StringLength(100, ErrorMessage = "The field {0} must be a string with a maximum length of {1} characters.")]
         public string Position { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "The field {0} is required.")]
+        [StringLength(100, ErrorMessage = "The field {0} must be a string with a maximum length of {1} characters.")]
         public string BossName { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "The field {0} is required.")]
+        [StringLength(50, ErrorMessage = "The field {0} must be a string with a maximum length of {1} characters.")]
         public string Shift { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "The field {0} is required.")]
+        [StringLength(100, ErrorMessage = "The field {0} must be a string with a maximum length of {1} characters.")]
         public string HiredBy { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "The field {0} is required.")]
         public bool IsActive { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "The field {0} is required.")]
         public bool IsFileComplete { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "The field {0} is required.")]
+        [StringLength(500, ErrorMessage = "The field {0} must be a string with a maximum length of {1} characters.")]
         public string Notes { get; set; }
 
         // Navigation properties

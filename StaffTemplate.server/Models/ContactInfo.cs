@@ -7,9 +7,15 @@ namespace StaffTemplate.server.Models
     {
         [Key, ForeignKey("Employee")]
         public int SocialSecurityNumber { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "The field {0} is required.")]
+        [EmailAddress(ErrorMessage = "The field {0} must be a valid email address.")]
+        [StringLength(100, ErrorMessage = "The field {0} must be a string with a maximum length of {1} characters.")]
         public string Email { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "The field {0} is required.")]
+        [Phone(ErrorMessage = "The field {0} must be a valid phone number.")]
+        [StringLength(15, ErrorMessage = "The field {0} must be a string with a maximum length of {1} characters.")]
         public string PhoneNumber { get; set; }
 
         // Navigation properties
