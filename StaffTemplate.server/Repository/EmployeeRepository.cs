@@ -1,6 +1,8 @@
 ﻿using StaffTemplate.server.Data;
 using StaffTemplate.server.Models;
 using StaffTemplate.server.Repository.IRepository;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace StaffTemplate.server.Repository
 {
@@ -34,6 +36,11 @@ namespace StaffTemplate.server.Repository
             return false;
         }
 
+        public bool DeleteEmployee(Employee employee)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool EmployeeExists(string name)
         {
             bool value = _db.Employees.Any(a => a.FirstName.ToLower().Trim() == name.ToLower().Trim());
@@ -45,9 +52,14 @@ namespace StaffTemplate.server.Repository
             return _db.Employees.Any(a => a.SocialSecurityNumber == SocialSecurityNumber);
         }
 
-        public Employee GetEmployee(int SocialSecurityNumber)
+        public Employee GetEmployeeById(int id)
         {
-            return _db.Employees.FirstOrDefault(a => a.SocialSecurityNumber == SocialSecurityNumber);
+            return _db.Employees.FirstOrDefault(e => e.Id == id);
+        }
+
+        public Employee GetEmployeeBySocialSecurityNumber(int SocialSecurityNumber)
+        {
+            return _db.Employees.FirstOrDefault(e => e.SocialSecurityNumber == SocialSecurityNumber);
         }
 
         public ICollection<Employee> GetEmployees()
@@ -64,11 +76,6 @@ namespace StaffTemplate.server.Repository
         {
             _db.Employees.Update(employee);
             return Save();
-        }
-
-        public Employee GetEmployee(int SocialSecurityNumber)
-        {
-            return _db.Employees.FirstOrDefault(e => e.SocialSecurityNumber == id);
         }
     }
 }
