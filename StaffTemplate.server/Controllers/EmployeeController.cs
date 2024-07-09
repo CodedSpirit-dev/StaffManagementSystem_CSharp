@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using StaffTemplate.server.Repository.IRepository;
 using StaffTemplate.server.Services;
 
 namespace StaffTemplate.server.Controllers
@@ -13,15 +14,15 @@ namespace StaffTemplate.server.Controllers
 
         public EmployeeController(IEmployeeService employeeService, IMapper mapper)
         {
-            _employeeService = employeeService;
+            _employeeRepository = _employeeRepository;
             _mapper = mapper;
         }
 
         [HttpGet]
-        public IActionResult GetResult()
+        public IActionResult GetEmployeeList()
         {
-            return Ok("Hello World");
-        }
 
+            var employees = _employeeService.GetEmployees();
+            return Ok(employees);}
     }
 }
