@@ -9,6 +9,10 @@ namespace StaffTemplate.server.Repository
     public class EmployeeRepository : IEmployeeRepository
     {
         private readonly ApplicationDbContext _db;
+        public EmployeeRepository(ApplicationDbContext db)
+        {
+            _db = db;
+        }
 
         public bool CreateEmployee(Employee employee, Address address, EmergencyContact emergencyContact, ContactInfo contactInfo, EmploymentDetails employmentDetails)
         {
@@ -51,14 +55,14 @@ namespace StaffTemplate.server.Repository
             }
         }
 
+        public bool EmployeeExists(int socialSecurityNumber)
+        {
+            return _db.Employees.Any(a => a.SocialSecurityNumber == socialSecurityNumber);
+        }
+
         public ICollection<Employee> GetEmployees()
         {
             return _db.Employees.ToList();
-        }
-
-        internal bool EmployeeExists(int socialSecurityNumber)
-        {
-            return _db.Employees.Any(a => a.SocialSecurityNumber == socialSecurityNumber);
         }
     }
 }

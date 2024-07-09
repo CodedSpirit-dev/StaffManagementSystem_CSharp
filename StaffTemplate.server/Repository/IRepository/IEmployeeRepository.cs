@@ -7,5 +7,6 @@ namespace StaffTemplate.server.Repository.IRepository
     {
         ICollection<Employee> GetEmployees();
         public bool CreateEmployee(Employee employee, Address address, EmergencyContact emergencyContact, ContactInfo contactInfo, EmploymentDetails employmentDetails);
+        bool EmployeeExists(int socialSecurityNumber);
     }
 }
