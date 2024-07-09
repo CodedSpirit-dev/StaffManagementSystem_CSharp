@@ -4,6 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using StaffTemplate.server.Data;
 using StaffTemplate.server.Mappings;
+using StaffTemplate.server.Repository;
+using StaffTemplate.server.Repository.IRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(EmployeeManagementMapping));
+IServiceCollection serviceCollection = builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+
 
 // Register DbContext with connection string
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

@@ -8,7 +8,9 @@ namespace StaffTemplate.server.Mappings
         public EmployeeManagementMapping()
         {
             CreateMap<Employee, EmployeeDTO>().ReverseMap();
-            CreateMap<EmploymentDetails, EmploymentDetails>().ReverseMap();
+            CreateMap<EmploymentDetailsDTO, EmploymentDetails>()
+                .ForMember(dest => dest.SocialSecurityNumber, opt => opt.Ignore()) // Opcional si no se asigna directamente desde DTO
+                .ForMember(dest => dest.Employee, opt => opt.Ignore()); // Opcional si no se asigna directamente desde DTO
             CreateMap<Address, AddressDTO>().ReverseMap();
             CreateMap<ContactInfo, ContactInfoDTO>().ReverseMap();
             CreateMap<EmergencyContact, EmergencyContactDTO>().ReverseMap();
