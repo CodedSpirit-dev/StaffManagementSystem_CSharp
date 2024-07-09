@@ -19,3 +19,4 @@
         public EmploymentDetailsDTO EmploymentDetails { get; set; }
         public EmergencyContactDTO EmergencyContact { get; set; }
     }
+}

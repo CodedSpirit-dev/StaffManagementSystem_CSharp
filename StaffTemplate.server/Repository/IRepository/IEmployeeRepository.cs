@@ -1,4 +1,6 @@
-﻿namespace StaffTemplate.server.Repository.IRepository
+﻿using StaffTemplate.server.Models;
+
+namespace StaffTemplate.server.Repository.IRepository
 {
     public interface IEmployeeRepository
     {
