@@ -14,6 +14,5 @@ namespace StaffTemplate.server.Data
         public DbSet<ContactInfo> ContactInfos { get; set; }
         public DbSet<EmergencyContact> EmergencyContacts { get; set; }
         public DbSet<EmploymentDetails> EmploymentDetails { get; set; }
-        public DbSet<Students> Students{ get; set; }
     }
 }

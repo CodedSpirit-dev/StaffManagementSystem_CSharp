@@ -1,4 +1,5 @@
-﻿using StaffTemplate.server.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using StaffTemplate.server.Data;
 using StaffTemplate.server.Models;
 
 public class EmployeeService
@@ -48,5 +49,15 @@ public class EmployeeService
                 throw;
             }
         }
+    }
+
+    public async Task<Employee> GetEmployeeByIdAsync(int id)
+    {
+        return await _context.Employees
+            .Include(e => e.ContactInfo)
+            .Include(e => e.Address)
+            .Include(e => e.EmploymentDetails)
+            .Include(e => e.EmergencyContact)
+            .FirstOrDefaultAsync(e => e.SocialSecurityNumber == id);
     }
 }

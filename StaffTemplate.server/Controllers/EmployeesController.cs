@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using StaffTemplate.server.Models;
 
 [ApiController]
@@ -76,12 +75,7 @@ public class EmployeesController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetEmployee(int id)
     {
-        var employee = await _context.Employees
-            .Include(e => e.ContactInfo)
-            .Include(e => e.Address)
-            .Include(e => e.EmploymentDetails)
-            .Include(e => e.EmergencyContact)
-            .FirstOrDefaultAsync(e => e.SocialSecurityNumber == id);
+        var employee = await _employeeService.GetEmployeeByIdAsync(id);
 
         if (employee == null)
         {

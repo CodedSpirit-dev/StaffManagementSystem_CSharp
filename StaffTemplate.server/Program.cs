@@ -31,7 +31,7 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
         options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
                           opts => opts.CommandTimeout((int)TimeSpan.FromMinutes(10).TotalSeconds))); // Increase command timeout
 
-    services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+    services.AddScoped<EmployeeService>();
 }
 
 void Configure(WebApplication app)
