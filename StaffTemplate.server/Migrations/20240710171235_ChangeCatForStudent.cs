@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace StaffTemplate.server.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class ChangeCatForStudent : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,7 +16,7 @@ namespace StaffTemplate.server.Migrations
                 name: "Employees",
                 columns: table => new
                 {
-                    SocialSecurityNumber = table.Column<int>(type: "integer", maxLength: 11, nullable: false)
+                    SocialSecurityNumber = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     RFC = table.Column<string>(type: "character varying(13)", maxLength: 13, nullable: false),
                     CURP = table.Column<string>(type: "character varying(18)", maxLength: 18, nullable: false),
@@ -33,6 +33,19 @@ namespace StaffTemplate.server.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Employees", x => x.SocialSecurityNumber);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Students",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Age = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Students", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -80,6 +93,8 @@ namespace StaffTemplate.server.Migrations
                 name: "EmergencyContacts",
                 columns: table => new
                 {
+                    EmergencyContactId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     SocialSecurityNumber = table.Column<int>(type: "integer", nullable: false),
                     EmergencyContactName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     EmergencyPhone = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: false),
@@ -87,7 +102,7 @@ namespace StaffTemplate.server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EmergencyContacts", x => x.SocialSecurityNumber);
+                    table.PrimaryKey("PK_EmergencyContacts", x => x.EmergencyContactId);
                     table.ForeignKey(
                         name: "FK_EmergencyContacts_Employees_SocialSecurityNumber",
                         column: x => x.SocialSecurityNumber,
@@ -121,6 +136,12 @@ namespace StaffTemplate.server.Migrations
                         principalColumn: "SocialSecurityNumber",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EmergencyContacts_SocialSecurityNumber",
+                table: "EmergencyContacts",
+                column: "SocialSecurityNumber",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -137,6 +158,9 @@ namespace StaffTemplate.server.Migrations
 
             migrationBuilder.DropTable(
                 name: "EmploymentDetails");
+
+            migrationBuilder.DropTable(
+                name: "Students");
 
             migrationBuilder.DropTable(
                 name: "Employees");

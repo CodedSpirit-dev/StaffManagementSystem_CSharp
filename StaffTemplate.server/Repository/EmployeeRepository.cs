@@ -42,6 +42,10 @@ namespace StaffTemplate.server.Repository
                     _db.ContactInfos.Add(contactInfo);
                     _db.SaveChanges();
 
+                    // Insertar detalles de empleo
+                    _db.EmploymentDetails.Add(employmentDetails);
+                    _db.SaveChanges();
+
                     // Commit de la transacción
                     transaction.Commit();
                     return true;
@@ -57,7 +61,7 @@ namespace StaffTemplate.server.Repository
 
         public bool EmployeeExists(int socialSecurityNumber)
         {
-            return _db.Employees.Any(a => a.SocialSecurityNumber == socialSecurityNumber);
+            return _db.Employees.Any(e => e.SocialSecurityNumber == socialSecurityNumber);
         }
 
         public ICollection<Employee> GetEmployees()

@@ -12,8 +12,8 @@ using StaffTemplate.server.Data;
 namespace StaffTemplate.server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240709164403_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20240710171235_ChangeCatForStudent")]
+    partial class ChangeCatForStudent
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -82,8 +82,11 @@ namespace StaffTemplate.server.Migrations
 
             modelBuilder.Entity("StaffTemplate.server.Models.EmergencyContact", b =>
                 {
-                    b.Property<int>("SocialSecurityNumber")
+                    b.Property<int>("EmergencyContactId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("EmergencyContactId"));
 
                     b.Property<string>("EmergencyContactName")
                         .IsRequired()
@@ -100,7 +103,13 @@ namespace StaffTemplate.server.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.HasKey("SocialSecurityNumber");
+                    b.Property<int>("SocialSecurityNumber")
+                        .HasColumnType("integer");
+
+                    b.HasKey("EmergencyContactId");
+
+                    b.HasIndex("SocialSecurityNumber")
+                        .IsUnique();
 
                     b.ToTable("EmergencyContacts");
                 });
@@ -109,7 +118,6 @@ namespace StaffTemplate.server.Migrations
                 {
                     b.Property<int>("SocialSecurityNumber")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(11)
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("SocialSecurityNumber"));
@@ -216,6 +224,24 @@ namespace StaffTemplate.server.Migrations
                     b.HasKey("SocialSecurityNumber");
 
                     b.ToTable("EmploymentDetails");
+                });
+
+            modelBuilder.Entity("StaffTemplate.server.Models.Students", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Age")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Students");
                 });
 
             modelBuilder.Entity("StaffTemplate.server.Models.Address", b =>
