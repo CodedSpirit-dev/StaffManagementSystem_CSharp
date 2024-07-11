@@ -1,26 +1,32 @@
-﻿using System.Net.Http.Json;
-using StaffTemplate.Shared.Dtos;
+﻿using StaffTemplate.Shared.Services;
+using System.Net.Http.Json;
 
-public class EmployeeService
+namespace StaffTemplate.Client.Services
 {
-    private readonly HttpClient _httpClient;
-
-    public EmployeeService(HttpClient httpClient)
+    public class EmployeeService : IEmployeeService
     {
-        _httpClient = httpClient;
-    }
+        private readonly HttpClient _httpClient;
 
-    public async Task<List<EmployeeDTO>> GetEmployeesAsync()
-    {
-        var response = await _httpClient.GetAsync("api/employees");
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadFromJsonAsync<List<EmployeeDTO>>();
-    }
+        public EmployeeService(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
+        }
 
-    public async Task<EmployeeDTO> CreateEmployeeAsync(EmployeeCreateDTO employee)
-    {
-        var response = await _httpClient.PostAsJsonAsync("api/employees", employee);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadFromJsonAsync<EmployeeDTO>();
+        public async Task<List<Employee>> GetEmployeesAsync()
+        {
+            return await _httpClient.GetFromJsonAsync<List<Employee>>("api/employees");
+        }
+
+        public async Task<Employee> InsertEmployeeAsync(Employee employee)
+        {
+            var response = await _httpClient.PostAsJsonAsync("api/employees", employee);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<Employee>();
+        }
+
+        public async Task<Employee> GetEmployeeByIdAsync(int id)
+        {
+            return await _httpClient.GetFromJsonAsync<Employee>($"api/employees/{id}");
+        }
     }
 }

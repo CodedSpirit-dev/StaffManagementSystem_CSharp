@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using StaffTemplate.server.Models;
-using StaffTemplate.server.Services;
+using StaffTemplate.Shared.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

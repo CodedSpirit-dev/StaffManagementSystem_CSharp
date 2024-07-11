@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using StaffTemplate.server.Data;
 using StaffTemplate.server.Mappings;
 using StaffTemplate.server.Services;
+using StaffTemplate.Shared.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,7 +31,7 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
                           opts => opts.CommandTimeout((int)TimeSpan.FromMinutes(10).TotalSeconds))); // Increase command timeout
 
     // Register services
-    services.AddScoped<IEmployeeService, EmployeeService>(); // Use interface to resolve dependencies
+    services.AddScoped < IEmployeeService, EmployeeService>(); // Use interface to resolve dependencies
 }
 
 void Configure(WebApplication app)
@@ -45,6 +46,14 @@ void Configure(WebApplication app)
             c.RoutePrefix = string.Empty;
         });
     }
+
+    //Enable CORS for all origins
+    app.UseCors(builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
 
     // Enable authorization middleware
     app.UseAuthorization();
