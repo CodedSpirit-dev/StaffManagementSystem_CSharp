@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 
 public class Employee
@@ -19,6 +20,7 @@ public class Employee
     public string FirstName { get; set; }
 
     [StringLength(50, ErrorMessage = "The field {0} must be a string with a maximum length of {1}.")]
+    [AllowNull]
     public string MiddleName { get; set; }
 
     [Required(ErrorMessage = "The field {0} is required.")]
