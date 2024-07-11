@@ -21,13 +21,14 @@ public class Employee
 
     [StringLength(50, ErrorMessage = "The field {0} must be a string with a maximum length of {1}.")]
     [AllowNull]
-    public string MiddleName { get; set; }
+    public string? MiddleName { get; set; }
 
     [Required(ErrorMessage = "The field {0} is required.")]
     [StringLength(50, ErrorMessage = "The field {0} must be a string with a maximum length of {1}.")]
     public string LastName { get; set; }
 
     [StringLength(50, ErrorMessage = "The field {0} must be a string with a maximum length of {1}.")]
+    [AllowNull]
     public string? SecondLastname { get; set; }
 
     [Required(ErrorMessage = "The field {0} is required.")]
@@ -46,7 +47,8 @@ public class Employee
     public int Children { get; set; }
 
     [StringLength(50, ErrorMessage = "The field {0} must be a string with a maximum length of {1}.")]
-    public string StudyGrade { get; set; }
+    [AllowNull]
+    public string? StudyGrade { get; set; }
 
     public ContactInfo ContactInfo { get; set; }
     public Address Address { get; set; }
@@ -140,7 +142,7 @@ public class EmergencyContact
     [StringLength(15, ErrorMessage = "The field {0} must be a string with a maximum length of {1} characters.")]
     public string EmergencyPhone { get; set; }
 
-    [Required(ErrorMessage = "The field {0} is required.")]
+    [AllowNull]
     [StringLength(50, ErrorMessage = "The field {0} must be a string with a maximum length of {1} characters.")]
-    public string EmergencyRelationship { get; set; }
+    public string? EmergencyRelationship { get; set; }
 }
