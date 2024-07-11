@@ -1,87 +1,53 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StaffTemplate.server.Models;
+using StaffTemplate.server.Services;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-[ApiController]
-[Route("api/[controller]")]
-public class EmployeesController : ControllerBase
+namespace StaffTemplate.server.Controllers
 {
-    private readonly EmployeeService _employeeService;
-
-    public EmployeesController(EmployeeService employeeService)
+    [ApiController]
+    [Route("api/[controller]")]
+    public class EmployeesController : ControllerBase
     {
-        _employeeService = employeeService;
-    }
+        private readonly IEmployeeService _employeeService;
 
-    [HttpPost]
-    public async Task<IActionResult> Create([FromBody] EmployeeCreateDTO employeeCreateDTO)
-    {
-        if (ModelState.IsValid)
+        public EmployeesController(IEmployeeService employeeService)
         {
-            var employee = new Employee
+            _employeeService = employeeService;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
+        {
+            var employees = await _employeeService.GetEmployeesAsync();
+            return Ok(employees);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Employee>> CreateEmployee(Employee employee)
+        {
+            if (!ModelState.IsValid)
             {
-                SocialSecurityNumber = employeeCreateDTO.Employee.SocialSecurityNumber,
-                RFC = employeeCreateDTO.Employee.RFC,
-                CURP = employeeCreateDTO.Employee.CURP,
-                FirstName = employeeCreateDTO.Employee.FirstName,
-                MiddleName = employeeCreateDTO.Employee.MiddleName,
-                LastName = employeeCreateDTO.Employee.LastName,
-                SecondLastname = employeeCreateDTO.Employee.SecondLastname,
-                BirthDate = employeeCreateDTO.Employee.BirthDate,
-                Gender = employeeCreateDTO.Employee.Gender,
-                MaritalStatus = employeeCreateDTO.Employee.MaritalStatus,
-                Children = employeeCreateDTO.Employee.Children,
-                StudyGrade = employeeCreateDTO.Employee.StudyGrade,
-                ContactInfo = new ContactInfo
-                {
-                    Email = employeeCreateDTO.ContactInfo.Email,
-                    PhoneNumber = employeeCreateDTO.ContactInfo.PhoneNumber
-                },
-                Address = new Address
-                {
-                    AddressLine = employeeCreateDTO.Address.AddressLine,
-                    PostalCode = employeeCreateDTO.Address.PostalCode,
-                    Neighborhood = employeeCreateDTO.Address.Neighborhood,
-                    City = employeeCreateDTO.Address.City,
-                    State = employeeCreateDTO.Address.State
-                },
-                EmploymentDetails = new EmploymentDetails
-                {
-                    HiringDate = employeeCreateDTO.EmploymentDetails.HiringDate,
-                    Department = employeeCreateDTO.EmploymentDetails.Department,
-                    Position = employeeCreateDTO.EmploymentDetails.Position,
-                    BossName = employeeCreateDTO.EmploymentDetails.BossName,
-                    Shift = employeeCreateDTO.EmploymentDetails.Shift,
-                    HiredBy = employeeCreateDTO.EmploymentDetails.HiredBy,
-                    IsActive = employeeCreateDTO.EmploymentDetails.IsActive,
-                    IsFileComplete = employeeCreateDTO.EmploymentDetails.IsFileComplete,
-                    Notes = employeeCreateDTO.EmploymentDetails.Notes
-                },
-                EmergencyContact = new EmergencyContact
-                {
-                    EmergencyContactName = employeeCreateDTO.EmergencyContact.EmergencyContactName,
-                    EmergencyPhone = employeeCreateDTO.EmergencyContact.EmergencyPhone,
-                    EmergencyRelationship = employeeCreateDTO.EmergencyContact.EmergencyRelationship
-                }
-            };
+                return BadRequest(ModelState);
+            }
 
             await _employeeService.InsertEmployeeAsync(employee);
 
             return CreatedAtAction(nameof(GetEmployee), new { id = employee.SocialSecurityNumber }, employee);
         }
 
-        return BadRequest(ModelState);
-    }
-
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetEmployee(int id)
-    {
-        var employee = await _employeeService.GetEmployeeByIdAsync(id);
-
-        if (employee == null)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Employee>> GetEmployee(int id)
         {
-            return NotFound();
-        }
+            var employee = await _employeeService.GetEmployeeByIdAsync(id);
 
-        return Ok(employee);
+            if (employee == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(employee);
+        }
     }
 }

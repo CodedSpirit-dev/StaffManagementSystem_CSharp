@@ -14,5 +14,10 @@ namespace StaffTemplate.server.Data
         public DbSet<ContactInfo> ContactInfos { get; set; }
         public DbSet<EmergencyContact> EmergencyContacts { get; set; }
         public DbSet<EmploymentDetails> EmploymentDetails { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Configuración adicional del modelo si es necesario
+        }
     }
 }

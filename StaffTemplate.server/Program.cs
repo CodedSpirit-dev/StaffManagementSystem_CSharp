@@ -1,11 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using StaffTemplate.server.Data;
 using StaffTemplate.server.Mappings;
-using StaffTemplate.server.Repository;
-using StaffTemplate.server.Repository.IRepository;
+using StaffTemplate.server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +20,8 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
     services.AddControllers();
     services.AddEndpointsApiExplorer();
     services.AddSwaggerGen();
+
+    // Register AutoMapper
     services.AddAutoMapper(typeof(EmployeeManagementMapping));
 
     // Register DbContext with connection string
@@ -31,13 +29,15 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
         options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
                           opts => opts.CommandTimeout((int)TimeSpan.FromMinutes(10).TotalSeconds))); // Increase command timeout
 
-    services.AddScoped<EmployeeService>();
+    // Register services
+    services.AddScoped<IEmployeeService, EmployeeService>(); // Use interface to resolve dependencies
 }
 
 void Configure(WebApplication app)
 {
     if (app.Environment.IsDevelopment())
     {
+        // Enable Swagger UI
         app.UseSwagger();
         app.UseSwaggerUI(c =>
         {
@@ -46,7 +46,9 @@ void Configure(WebApplication app)
         });
     }
 
+    // Enable authorization middleware
     app.UseAuthorization();
 
+    // Map controllers
     app.MapControllers();
 }

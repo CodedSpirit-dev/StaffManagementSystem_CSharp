@@ -1,63 +1,41 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StaffTemplate.server.Data;
 using StaffTemplate.server.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-public class EmployeeService
+namespace StaffTemplate.server.Services
 {
-    private readonly ApplicationDbContext _context;
-
-    public EmployeeService(ApplicationDbContext context)
+    public interface IEmployeeService
     {
-        _context = context;
+        Task<IEnumerable<Employee>> GetEmployeesAsync();
+        Task<Employee> GetEmployeeByIdAsync(int id);
+        Task InsertEmployeeAsync(Employee employee);
     }
 
-    public async Task InsertEmployeeAsync(Employee employee)
+    public class EmployeeService : IEmployeeService
     {
-        using (var transaction = await _context.Database.BeginTransactionAsync())
+        private readonly ApplicationDbContext _context;
+
+        public EmployeeService(ApplicationDbContext context)
         {
-            try
-            {
-                // Inserta el empleado
-                _context.Employees.Add(employee);
-                await _context.SaveChangesAsync();
-
-                // Inserta la información de contacto
-                employee.ContactInfo.SocialSecurityNumber = employee.SocialSecurityNumber;
-                _context.ContactInfos.Add(employee.ContactInfo);
-
-                // Inserta la dirección
-                employee.Address.SocialSecurityNumber = employee.SocialSecurityNumber;
-                _context.Addresses.Add(employee.Address);
-
-                // Inserta los detalles de empleo
-                employee.EmploymentDetails.SocialSecurityNumber = employee.SocialSecurityNumber;
-                _context.EmploymentDetails.Add(employee.EmploymentDetails);
-
-                // Inserta el contacto de emergencia
-                employee.EmergencyContact.SocialSecurityNumber = employee.SocialSecurityNumber;
-                _context.EmergencyContacts.Add(employee.EmergencyContact);
-
-                await _context.SaveChangesAsync();
-
-                // Confirma la transacción
-                await transaction.CommitAsync();
-            }
-            catch (Exception)
-            {
-                // Si hay un error, revierte la transacción
-                await transaction.RollbackAsync();
-                throw;
-            }
+            _context = context;
         }
-    }
 
-    public async Task<Employee> GetEmployeeByIdAsync(int id)
-    {
-        return await _context.Employees
-            .Include(e => e.ContactInfo)
-            .Include(e => e.Address)
-            .Include(e => e.EmploymentDetails)
-            .Include(e => e.EmergencyContact)
-            .FirstOrDefaultAsync(e => e.SocialSecurityNumber == id);
+        public async Task<IEnumerable<Employee>> GetEmployeesAsync()
+        {
+            return await _context.Employees.ToListAsync();
+        }
+
+        public async Task<Employee> GetEmployeeByIdAsync(int id)
+        {
+            return await _context.Employees.FindAsync(id);
+        }
+
+        public async Task InsertEmployeeAsync(Employee employee)
+        {
+            _context.Employees.Add(employee);
+            await _context.SaveChangesAsync();
+        }
     }
 }
