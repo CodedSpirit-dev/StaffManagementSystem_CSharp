@@ -1,12 +1,18 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-interface EmployeeData {
-    socialSecurityNumber: number;
-    firstName: string;
-    lastName: string;
-    department: string;
-    phoneNumber: string;
+class EmployeeData {
+    socialSecurityNumber: string = "";
+    firstName: string = "";
+    lastName: string = "";
+    department: string = "";
+    contactInfo:{
+        phoneNumber: string;
+        email: string;
+    } = {
+        phoneNumber: "",
+        email: ""
+    };
 }
 
 function EmployeeList() {
@@ -21,10 +27,10 @@ function EmployeeList() {
         : <table className="table table-striped" aria-labelledby="tableLabel">
             <thead>
                 <tr>
-                    <th>Employee ID</th>
-                    <th>Name</th>
-                    <th>Department</th>
-                    <th>phoneNumber</th>
+                    <th>Identificador</th>
+                    <th>Nombre</th>
+                    <th>Departamento</th>
+                    <th>Numero de telefono</th>
                 </tr>
             </thead>
             <tbody>
