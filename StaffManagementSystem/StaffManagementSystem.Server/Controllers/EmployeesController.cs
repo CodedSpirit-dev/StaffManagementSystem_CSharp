@@ -17,7 +17,7 @@ namespace StaffTemplate.server.Controllers
             _employeeService = employeeService;
         }
 
-        [HttpGet]
+        [HttpGet(Name = "GetEmployees")]
         public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
         {
             var employees = await _employeeService.GetEmployeesAsync();
