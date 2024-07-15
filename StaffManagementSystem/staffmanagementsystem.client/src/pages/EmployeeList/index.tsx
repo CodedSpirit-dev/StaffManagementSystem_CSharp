@@ -1,36 +1,44 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-class EmployeeData {
-    socialSecurityNumber: string = "";
-    firstName: string = "";
-    lastName: string = "";
-    department: string = "";
-    contactInfo:{
-        phoneNumber: string;
-        email: string;
-    } = {
-        phoneNumber: "",
-        email: ""
-    };
+interface ContactInfo {
+    phoneNumber: string;
+    email: string;
+}
+
+interface EmploymentDetails{
+    hireDate: Date;
+    department: string;
+    isActive: boolean;
+}
+
+interface EmployeeData {
+    socialSecurityNumber: number;
+    firstName: string;
+    lastName: string;
+    department: string;
+    contactInfo: ContactInfo;
+    employmentDetails: EmploymentDetails;
 }
 
 function EmployeeList() {
-    const [employees, setEmployees] = useState<EmployeeData[]>();
+    const [employees, setEmployees] = useState<EmployeeData[]>([]);
 
     useEffect(() => {
         FetchAllEmployees();
     }, []);
 
-    const contents = employees === undefined
-        ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
+    const contents = employees.length === 0
+        ? <p><em>Loading...</em></p>
         : <table className="table table-striped" aria-labelledby="tableLabel">
             <thead>
                 <tr>
                     <th>Identificador</th>
                     <th>Nombre</th>
-                    <th>Departamento</th>
+                    <th>Apellido</th>
                     <th>Numero de telefono</th>
+                    <th>Departamento</th>
+                    <th>Activo</th>
                 </tr>
             </thead>
             <tbody>
@@ -39,8 +47,9 @@ function EmployeeList() {
                         <td>{employee.socialSecurityNumber}</td>
                         <td>{employee.firstName}</td>
                         <td>{employee.lastName}</td>
-                        <td>{employee.department}</td>
                         <td>{employee.contactInfo.phoneNumber}</td>
+                        <td>{employee.employmentDetails.department}</td>
+                        <td>{employee.employmentDetails.isActive ? "Si" : "No"}</td>
                     </tr>
                 )}
             </tbody>
@@ -57,7 +66,7 @@ function EmployeeList() {
 
     async function FetchAllEmployees() {
         const response = await fetch('api/Employees');
-        const data = await response.json();
+        const data: EmployeeData[] = await response.json();
         setEmployees(data);
     }
 }
