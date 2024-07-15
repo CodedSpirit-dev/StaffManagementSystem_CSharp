@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
+using System.Security.Cryptography.X509Certificates;
 
 namespace StaffManagementSystem.Server.Models
 {
@@ -39,6 +41,9 @@ namespace StaffManagementSystem.Server.Models
         [Required(ErrorMessage = "The field {0} is required.")]
         [StringLength(10, ErrorMessage = "The field {0} must be a string with a maximum length of {1}.")]
         public string Gender { get; set; }
+        [Required(ErrorMessage = "The field {0} is required.")]
+        [StringLength(10, ErrorMessage = "The field {0} must be a string with a maximum length of {1}.")]
+        public String BloodType { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required.")]
         [StringLength(50, ErrorMessage = "The field {0} must be a string with a maximum length of {1}.")]
@@ -102,6 +107,8 @@ namespace StaffManagementSystem.Server.Models
     {
         [Required(ErrorMessage = "The field {0} is required.")]
         public DateTime HiringDate { get; set; }
+        [AllowNull]
+        public DateTime? ResignationDate { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required.")]
         [StringLength(100, ErrorMessage = "The field {0} must be a string with a maximum length of {1} characters.")]
@@ -125,6 +132,8 @@ namespace StaffManagementSystem.Server.Models
 
         [Required(ErrorMessage = "The field {0} is required.")]
         public bool IsActive { get; set; }
+        [Required(ErrorMessage = "The field {0} is required.")
+        public bool InsuranceActive { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required.")]
         public bool IsFileComplete { get; set; }
