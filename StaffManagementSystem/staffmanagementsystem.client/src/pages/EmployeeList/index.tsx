@@ -1,3 +1,4 @@
+import { Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow } from "@tremor/react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -6,7 +7,7 @@ interface ContactInfo {
     email: string;
 }
 
-interface EmploymentDetails{
+interface EmploymentDetails {
     hireDate: Date;
     department: string;
     isActive: boolean;
@@ -30,37 +31,38 @@ function EmployeeList() {
 
     const contents = employees.length === 0
         ? <p><em>Loading...</em></p>
-        : <table className="table table-striped" aria-labelledby="tableLabel">
-            <thead>
-                <tr>
-                    <th>Identificador</th>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Numero de telefono</th>
-                    <th>Departamento</th>
-                    <th>Activo</th>
-                </tr>
-            </thead>
-            <tbody>
-                {employees.map(employee =>
-                    <tr key={employee.socialSecurityNumber}>
-                        <td>{employee.socialSecurityNumber}</td>
-                        <td>{employee.firstName}</td>
-                        <td>{employee.lastName}</td>
-                        <td>{employee.contactInfo.phoneNumber}</td>
-                        <td>{employee.employmentDetails.department}</td>
-                        <td>{employee.employmentDetails.isActive ? "Si" : "No"}</td>
-                    </tr>
-                )}
-            </tbody>
-        </table>;
+        : <div className="mx-auto max-w-2xl">
+            <Table className="table-auto border border-slate-300 border-opacity-70 divide-tremor-content-emphasis">
+                <TableHead>
+                    <TableRow>
+                        <TableHeaderCell>Identificador</TableHeaderCell>
+                        <TableHeaderCell>Nombre</TableHeaderCell>
+                        <TableHeaderCell>Apellido</TableHeaderCell>
+                        <TableHeaderCell>Numero de telefono</TableHeaderCell>
+                        <TableHeaderCell>Departamento</TableHeaderCell>
+                        <TableHeaderCell>Activo</TableHeaderCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {employees.map((employee, index) =>
+                        <TableRow key={employee.socialSecurityNumber} className={index % 2 === 0 ? 'row-even' : 'row-odd'}>
+                            <TableCell className="text-center">{employee.socialSecurityNumber}</TableCell>
+                            <TableCell>{employee.firstName}</TableCell>
+                            <TableCell>{employee.lastName}</TableCell>
+                            <TableCell className="text-center">{employee.contactInfo.phoneNumber}</TableCell>
+                            <TableCell>{employee.employmentDetails.department}</TableCell>
+                            <TableCell className="text-center">{employee.employmentDetails.isActive ? "Si" : "No"}</TableCell>
+                        </TableRow>
+                    )}
+                </TableBody>
+            </Table>
+        </div>;
 
     return (
         <div>
-            <h1 id="tableLabel">Employee List</h1>
+            <h1 className="text-2xl font-extrabold m-3">Employee List</h1>
             <p>This component demonstrates fetching data from the server.</p>
             {contents}
-            <Link to="/">HOME</Link>
         </div>
     );
 

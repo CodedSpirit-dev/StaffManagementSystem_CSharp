@@ -2,3 +2,58 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base{
+    body{
+        margin: auto;
+        padding: 13;
+    }
+    h1, h2{
+        @apply text-4xl font-bold text-center;
+    }
+    h2{
+        @apply text-3xl font-medium;
+    }
+    h3{
+        @apply text-2xl font-medium;
+    }
+    h4{
+        @apply text-xl font-medium;
+    }
+    h5{
+        @apply text-lg font-medium;
+    }
+    h6{
+        @apply text-base font-medium;
+    }
+    a{
+        @apply text-blue-500 hover:text-tremor-border;
+
+    }
+    nav{
+        @apply m-0 p-0;
+    }
+    forms{
+        @apply m-0 p-0;
+    }
+}
+
+.tremor-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.table-auto th, .table-auto td {
+    padding: 10px;
+    text-align: left;
+}
+
+.row-odd {
+    background-color: #f8f8f8;
+    @apply divide-x-2 divide-y-2 hover:bg-blue-200;
+}
+
+.row-even {
+    background-color: #e0f7fa;
+    @apply divide-x-2 divide-y-2 hover:bg-blue-200;
+}
