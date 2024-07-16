@@ -11,6 +11,7 @@ interface EmploymentDetails {
     hireDate: Date;
     department: string;
     isActive: boolean;
+    insuranceActive: boolean;
 }
 
 interface EmployeeData {
@@ -31,7 +32,7 @@ function EmployeeList() {
 
     const contents = employees.length === 0
         ? <p><em>Loading...</em></p>
-        : <div className="mx-auto max-w-2xl">
+        : <div className="mx-auto max-w-2xl my-3 gap-4 pb-8">
             <Table className="table-auto border border-slate-300 border-opacity-70 divide-tremor-content-emphasis">
                 <TableHead>
                     <TableRow>
@@ -41,6 +42,7 @@ function EmployeeList() {
                         <TableHeaderCell>Numero de telefono</TableHeaderCell>
                         <TableHeaderCell>Departamento</TableHeaderCell>
                         <TableHeaderCell>Activo</TableHeaderCell>
+                        <TableHeaderCell>Tiene seguro</TableHeaderCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -52,6 +54,7 @@ function EmployeeList() {
                             <TableCell className="text-center">{employee.contactInfo.phoneNumber}</TableCell>
                             <TableCell>{employee.employmentDetails.department}</TableCell>
                             <TableCell className="text-center">{employee.employmentDetails.isActive ? "Si" : "No"}</TableCell>
+                            <TableCell className="text-center">{employee.employmentDetails.insuranceActive ? "Si" : "No"}</TableCell>
                         </TableRow>
                     )}
                 </TableBody>
@@ -59,7 +62,7 @@ function EmployeeList() {
         </div>;
 
     return (
-        <div>
+        <div className="pb-8">
             <h1 className="text-2xl font-extrabold m-3">Employee List</h1>
             <p>This component demonstrates fetching data from the server.</p>
             {contents}

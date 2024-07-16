@@ -132,7 +132,8 @@ namespace StaffManagementSystem.Server.Models
 
         [Required(ErrorMessage = "The field {0} is required.")]
         public bool IsActive { get; set; }
-        [Required(ErrorMessage = "The field {0} is required.")
+
+        [Required(ErrorMessage = "The field {0} is required.")]
         public bool InsuranceActive { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required.")]

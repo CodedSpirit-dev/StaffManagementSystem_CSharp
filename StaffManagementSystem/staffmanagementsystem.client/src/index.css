@@ -8,10 +8,10 @@
         padding: 13;
     }
     h1, h2{
-        @apply text-4xl font-bold text-center;
+        @apply text-4xl font-bold text-center mb-6;
     }
     h2{
-        @apply text-3xl font-medium;
+        @apply text-3xl font-medium mb-6;
     }
     h3{
         @apply text-2xl font-medium;
@@ -35,6 +35,19 @@
     forms{
         @apply m-0 p-0;
     }
+    input{
+        @apply m-0 p-0;
+    }
+}
+
+.input_text {
+    @apply form-input px-4 py-3 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50;
+    border-radius: 10px;
+}
+
+.input_date {
+    @apply form-input px-4 py-3 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50;
+    border-radius: 10px;
 }
 
 .tremor-title {

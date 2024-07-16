@@ -3,6 +3,7 @@ import EmployeeList from './pages/EmployeeList';
 import Home from './pages/Home';
 import { NavBar } from './components/NavBar';
 import { EmployeeCreate } from './pages/EmployeeCreate';
+import { Footer } from './components/Footer';
 
 function App() {
         return (
@@ -13,6 +14,7 @@ function App() {
                     <Route path="/lista" element={<EmployeeList />} />
                     <Route path="/crearUsuario" element={<EmployeeCreate/>} />
                 </Routes>
+                <Footer />
             </>
         );
     }
