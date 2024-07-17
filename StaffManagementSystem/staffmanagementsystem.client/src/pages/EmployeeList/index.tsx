@@ -11,7 +11,7 @@ function EmployeeList() {
 
     const contents = employees.length === 0
         ? <p><em>Loading...</em></p>
-        : <div className="mx-auto max-w-2xl my-3 gap-4 pb-8">
+        : <div className="mx-auto max-w-2xl my-3">
             <Table className="table-auto border border-slate-300 border-opacity-70 divide-tremor-content-emphasis">
                 <TableHead>
                     <TableRow>
@@ -41,8 +41,8 @@ function EmployeeList() {
         </div>;
 
     return (
-        <div className="pb-8">
-            <h1 className="text-2xl font-extrabold m-3">Employee List</h1>
+        <div>
+            <h1 className="text-2xl font-extrabold">Employee List</h1>
             <p>This component demonstrates fetching data from the server.</p>
             {contents}
         </div>

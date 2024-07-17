@@ -11,10 +11,10 @@
         @apply text-4xl font-bold text-center mb-6;
     }
     h2{
-        @apply text-3xl font-medium mb-6;
+        @apply text-3xl font-medium my-6;
     }
     h3{
-        @apply text-2xl font-medium;
+        @apply text-2xl font-medium my-6;
     }
     h4{
         @apply text-xl font-medium;
@@ -32,7 +32,7 @@
     nav{
         @apply m-0 p-0;
     }
-    forms{
+    form{
         @apply m-0 p-0;
     }
     input{

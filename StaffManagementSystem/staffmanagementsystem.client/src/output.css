@@ -850,6 +850,7 @@ h1, h2 {
 }
 
 h2 {
+  margin-top: 1.5rem;
   margin-bottom: 1.5rem;
   font-size: 1.875rem;
   line-height: 2.25rem;
@@ -857,6 +858,8 @@ h2 {
 }
 
 h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
   font-size: 1.5rem;
   line-height: 2rem;
   font-weight: 500;
@@ -895,7 +898,7 @@ nav {
   padding: 0px;
 }
 
-forms {
+form {
   margin: 0px;
   padding: 0px;
 }
@@ -1013,10 +1016,6 @@ input {
   --tw-contain-style:  ;
 }
 
-.m-3 {
-  margin: 0.75rem;
-}
-
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -1075,12 +1074,6 @@ input {
   --tw-space-x-reverse: 0;
   margin-right: calc(1rem * var(--tw-space-x-reverse));
   margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
-}
-
-.space-y-12 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-y-reverse: 0;
-  margin-top: calc(3rem * calc(1 - var(--tw-space-y-reverse)));
-  margin-bottom: calc(3rem * var(--tw-space-y-reverse));
 }
 
 .divide-tremor-content-emphasis > :not([hidden]) ~ :not([hidden]) {
@@ -5458,10 +5451,6 @@ input {
 
 .p-2 {
   padding: 0.5rem;
-}
-
-.pb-8 {
-  padding-bottom: 2rem;
 }
 
 .text-center {
