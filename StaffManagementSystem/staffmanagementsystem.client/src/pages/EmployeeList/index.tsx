@@ -1,27 +1,6 @@
 import { Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow } from "@tremor/react";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-
-interface ContactInfo {
-    phoneNumber: string;
-    email: string;
-}
-
-interface EmploymentDetails {
-    hireDate: Date;
-    department: string;
-    isActive: boolean;
-    insuranceActive: boolean;
-}
-
-interface EmployeeData {
-    socialSecurityNumber: number;
-    firstName: string;
-    lastName: string;
-    department: string;
-    contactInfo: ContactInfo;
-    employmentDetails: EmploymentDetails;
-}
+import { EmployeeData } from "../../utils/interfaces";
 
 function EmployeeList() {
     const [employees, setEmployees] = useState<EmployeeData[]>([]);

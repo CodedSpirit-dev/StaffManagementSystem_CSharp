@@ -70,3 +70,9 @@
     background-color: #e0f7fa;
     @apply divide-x-2 divide-y-2 hover:bg-blue-200;
 }
+
+.error-message {
+    color: red;
+    @apply text-red-500 italic;
+    font-size: 0.6rem;
+}
