@@ -1,61 +1,88 @@
-import { Form, FormProvider, useForm } from "react-hook-form";
-import { EmployeeData } from "../../utils/interfaces";
+import React from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { IEmployeeData } from "../../utils/interfaces";
 
 export const EmployeeCreate: React.FC = () => {
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm<EmployeeData>();
+    const methods = useForm<IEmployeeData>();
+    const { register, handleSubmit, formState: { errors } } = methods;
 
-    const onSubmit = async (data: EmployeeData) => {
-        console.log(data);
-        // TODO: Call API to create employee
-    };
-
-    const onCreateEmployee = (data: EmployeeData) => {
-        let employee: EmployeeData = {
+    const onSubmit = (data: IEmployeeData) => {
+        const formattedData = {
+            socialSecurityNumber: data.socialSecurityNumber,
+            rfc: data.rfc,
+            curp: data.curp,
             firstName: data.firstName,
             middleName: data.middleName,
             lastName: data.lastName,
             secondLastname: data.secondLastname,
-            socialSecurityNumber: data.socialSecurityNumber,
-            rfc: data.rfc,
-            curp: data.curp,
-            birthDate: data.birthDate,
+            birthDate: `${new Date(data.birthDate).getFullYear()}-${String(new Date(data.birthDate).getMonth() + 1).padStart(2, '0')}-${String(new Date(data.birthDate).getDate()).padStart(2, '0')}`,
             gender: data.gender,
             bloodType: data.bloodType,
             maritalStatus: data.maritalStatus,
             children: data.children,
             studyGrade: data.studyGrade,
-            contactInfo: data.contactInfo,
-            address: data.address,
-            employmentDetails: data.employmentDetails,
-            emergencyContact: data.emergencyContact
+            contactInfo: {
+                email: data.contactInfo.email,
+                phoneNumber: data.contactInfo.phoneNumber
+            },
+            address: {
+                addressLine: data.address.addressLine,
+                postalCode: data.address.postalCode,
+                neighborhood: data.address.neighborhood,
+                city: data.address.city,
+                state: data.address.state
+            },
+            employmentDetails: {
+                hiringDate: new Date(data.employmentDetails.hiringDate).toISOString(),
+                resignationDate: data.employmentDetails.resignationDate ? new Date(data.employmentDetails.resignationDate).toISOString() : null,
+                department: data.employmentDetails.department,
+                position: data.employmentDetails.position,
+                bossName: data.employmentDetails.bossName,
+                shift: data.employmentDetails.shift,
+                hiredBy: data.employmentDetails.hiredBy,
+                isActive: true,
+                insuranceActive: true,
+                isFileComplete: JSON.parse(data.employmentDetails.isFileComplete),
+                notes: data.employmentDetails.notes
+            },
+            emergencyContact: {
+                emergencyContactName: data.emergencyContact.emergencyContactName,
+                emergencyPhone: data.emergencyContact.emergencyPhone,
+                emergencyRelationship: data.emergencyContact.emergencyRelationship
+            }
         };
-        }
-    }
+
+        fetch("https://localhost:5173/api/Employees/Create", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(formattedData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Success:", data);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    };
 
     return (
         <div>
             <h1>Alta de empleados</h1>
             <h2>Aquí puedes dar de alta a nuevos empleados</h2>
-            <FormProvider {...{ register, handleSubmit, errors }}>
-                <Form
-                    action="api/Employees/Create"
-                    method="post"
-                    content="application/json"
-                    className="flex flex-col items-center"
-                >
+            <FormProvider {...methods}>
+                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center">
                     <div>
                         <div>
                             <h2>Datos Personales</h2>
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label htmlFor="name">Nombre</label>
+                                    <label htmlFor="firstName">Nombre</label>
                                     <input
                                         type="text"
-                                        id="name"
+                                        id="firstName"
                                         className="input_text"
                                         {...register("firstName", { required: "Introduce el nombre" })}
                                     />
@@ -81,10 +108,10 @@ export const EmployeeCreate: React.FC = () => {
                                     {errors.lastName && <p className="error-message">{errors.lastName.message}</p>}
                                 </div>
                                 <div>
-                                    <label htmlFor="secondLastName">Segundo apellido</label>
+                                    <label htmlFor="secondLastname">Segundo apellido</label>
                                     <input
                                         type="text"
-                                        id="secondLastName"
+                                        id="secondLastname"
                                         className="input_text"
                                         {...register("secondLastname")}
                                     />
@@ -172,9 +199,7 @@ export const EmployeeCreate: React.FC = () => {
                                         <option value="Masters">Maestría</option>
                                         <option value="Doctorate">Doctorado</option>
                                     </select>
-                                    {errors.studyGrade && (
-                                        <p className="error-message">{errors.studyGrade.message}</p>
-                                    )}
+                                    {errors.studyGrade && <p className="error-message">{errors.studyGrade.message}</p>}
                                 </div>
                                 <div>
                                     <label htmlFor="socialSecurityNumber">Número de seguro social</label>
@@ -197,8 +222,6 @@ export const EmployeeCreate: React.FC = () => {
                                     {errors.rfc && <p className="error-message">{errors.rfc.message}</p>}
                                 </div>
                                 <div>
-
-
                                     <label htmlFor="curp">CURP</label>
                                     <input
                                         type="text"
@@ -209,92 +232,196 @@ export const EmployeeCreate: React.FC = () => {
                                     {errors.curp && <p className="error-message">{errors.curp.message}</p>}
                                 </div>
                             </div>
+                            <h2>Datos de contacto</h2>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label htmlFor="contactInfo.email">Email</label>
+                                    <input
+                                        type="email"
+                                        id="contactInfo.email"
+                                        className="input_text"
+                                        {...register("contactInfo.email", { required: "Por favor, introduce un email." })}
+                                    />
+                                    {errors.contactInfo?.email && <p className="error-message">{errors.contactInfo.email.message}</p>}
+                                </div>
+                                <div>
+                                    <label htmlFor="contactInfo.phoneNumber">Número de teléfono</label>
+                                    <input
+                                        type="tel"
+                                        id="contactInfo.phoneNumber"
+                                        className="input_text"
+                                        {...register("contactInfo.phoneNumber", { required: "Por favor, introduce un número de teléfono." })}
+                                    />
+                                    {errors.contactInfo?.phoneNumber && <p className="error-message">{errors.contactInfo.phoneNumber.message}</p>}
+                                </div>
+                            </div>
+                            <h2>Dirección</h2>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label htmlFor="address.addressLine">Dirección</label>
+                                    <input
+                                        type="text"
+                                        id="address.addressLine"
+                                        className="input_text"
+                                        {...register("address.addressLine", { required: "Por favor, introduce una dirección." })}
+                                    />
+                                    {errors.address?.addressLine && <p className="error-message">{errors.address.addressLine.message}</p>}
+                                </div>
+                                <div>
+                                    <label htmlFor="address.postalCode">Código postal</label>
+                                    <input
+                                        type="text"
+                                        id="address.postalCode"
+                                        className="input_text"
+                                        {...register("address.postalCode", { required: "Por favor, introduce un código postal." })}
+                                    />
+                                    {errors.address?.postalCode && <p className="error-message">{errors.address.postalCode.message}</p>}
+                                </div>
+                                <div>
+                                    <label htmlFor="address.neighborhood">Colonia</label>
+                                    <input
+                                        type="text"
+                                        id="address.neighborhood"
+                                        className="input_text"
+                                        {...register("address.neighborhood", { required: "Por favor, introduce una colonia." })}
+                                    />
+                                    {errors.address?.neighborhood && <p className="error-message">{errors.address.neighborhood.message}</p>}
+                                </div>
+                                <div>
+                                    <label htmlFor="address.city">Ciudad</label>
+                                    <input
+                                        type="text"
+                                        id="address.city"
+                                        className="input_text"
+                                        {...register("address.city", { required: "Por favor, introduce una ciudad." })}
+                                    />
+                                    {errors.address?.city && <p className="error-message">{errors.address.city.message}</p>}
+                                </div>
+                                <div>
+                                    <label htmlFor="address.state">Estado</label>
+                                    <input
+                                        type="text"
+                                        id="address.state"
+                                        className="input_text"
+                                        {...register("address.state", { required: "Por favor, introduce un estado." })}
+                                    />
+                                    {errors.address?.state && <p className="error-message">{errors.address.state.message}</p>}
+                                </div>
+                            </div>
+                            <h2>Detalles de empleo</h2>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label htmlFor="employmentDetails.hiringDate">Fecha de contratación</label>
+                                    <input
+                                        type="date"
+                                        id="employmentDetails.hiringDate"
+                                        className="input_date"
+                                        {...register("employmentDetails.hiringDate", { required: "La fecha de contratación es requerida" })}
+                                    />
+                                    {errors.employmentDetails?.hiringDate && <p className="error-message">{errors.employmentDetails.hiringDate.message}</p>}
+                                </div>
+                                <div>
+                                    <label htmlFor="employmentDetails.department">Departamento</label>
+                                    <input
+                                        type="text"
+                                        id="employmentDetails.department"
+                                        className="input_text"
+                                        {...register("employmentDetails.department", { required: "El departamento es requerido" })}
+                                    />
+                                    {errors.employmentDetails?.department && <p className="error-message">{errors.employmentDetails.department.message}</p>}
+                                </div>
+                                <div>
+                                    <label htmlFor="employmentDetails.position">Puesto</label>
+                                    <input
+                                        type="text"
+                                        id="employmentDetails.position"
+                                        className="input_text"
+                                        {...register("employmentDetails.position", { required: "El puesto es requerido" })}
+                                    />
+                                    {errors.employmentDetails?.position && <p className="error-message">{errors.employmentDetails.position.message}</p>}
+                                </div>
+                                <div>
+                                    <label htmlFor="employmentDetails.bossName">Nombre del jefe</label>
+                                    <input
+                                        type="text"
+                                        id="employmentDetails.bossName"
+                                        className="input_text"
+                                        {...register("employmentDetails.bossName")}
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="employmentDetails.shift">Turno</label>
+                                    <input
+                                        type="text"
+                                        id="employmentDetails.shift"
+                                        className="input_text"
+                                        {...register("employmentDetails.shift", { required: "El turno es requerido" })}
+                                    />
+                                    {errors.employmentDetails?.shift && <p className="error-message">{errors.employmentDetails.shift.message}</p>}
+                                </div>
+                                <div>
+                                    <label htmlFor="employmentDetails.hiredBy">Contratado por</label>
+                                    <input
+                                        type="text"
+                                        id="employmentDetails.hiredBy"
+                                        className="input_text"
+                                        {...register("employmentDetails.hiredBy", { required: "El campo 'Contratado por' es requerido" })}
+                                    />
+                                    {errors.employmentDetails?.hiredBy && <p className="error-message">{errors.employmentDetails.hiredBy.message}</p>}
+                                </div>
+                                <div>
+                                    <label htmlFor="employmentDetails.isFileComplete">Archivo completo</label>
+                                    <select id="employmentDetails.isFileComplete" className="input_text" {...register("employmentDetails.isFileComplete")}>
+                                        <option value={JSON.parse("true")}>Si</option>
+                                        <option value={JSON.parse("false")}>No</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label htmlFor="employmentDetails.notes">Notas</label>
+                                    <textarea
+                                        id="employmentDetails.notes"
+                                        className="input_text"
+                                        {...register("employmentDetails.notes")}
+                                    />
+                                </div>
+                            </div>
+                            <h2>Contacto de emergencia</h2>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label htmlFor="emergencyContact.emergencyContactName">Nombre</label>
+                                    <input
+                                        type="text"
+                                        id="emergencyContact.emergencyContactName"
+                                        className="input_text"
+                                        {...register("emergencyContact.emergencyContactName", { required: "Por favor, introduce un nombre para el contacto de emergencia." })}
+                                    />
+                                    {errors.emergencyContact?.emergencyContactName && <p className="error-message">{errors.emergencyContact.emergencyContactName.message}</p>}
+                                </div>
+                                <div>
+                                    <label htmlFor="emergencyContact.emergencyPhone">Teléfono</label>
+                                    <input
+                                        type="tel"
+                                        id="emergencyContact.emergencyPhone"
+                                        className="input_text"
+                                        {...register("emergencyContact.emergencyPhone", { required: "Por favor, introduce un teléfono para el contacto de emergencia." })}
+                                    />
+                                    {errors.emergencyContact?.emergencyPhone && <p className="error-message">{errors.emergencyContact.emergencyPhone.message}</p>}
+                                </div>
+                                <div>
+                                    <label htmlFor="emergencyContact.emergencyRelationship">Relación</label>
+                                    <input
+                                        type="text"
+                                        id="emergencyContact.emergencyRelationship"
+                                        className="input_text"
+                                        {...register("emergencyContact.emergencyRelationship", { required: "Por favor, introduce la relación del contacto de emergencia." })}
+                                    />
+                                    {errors.emergencyContact?.emergencyRelationship && <p className="error-message">{errors.emergencyContact.emergencyRelationship.message}</p>}
+                                </div>
+                            </div>
                         </div>
-                        <h3>Datos de contacto</h3>
-                        <div>
-                            <label htmlFor="email">Email</label>
-                            <input
-                                type="email"
-                                id="email"
-                                className="input_text"
-                                {...register("contactInfo.email", { required: "Por favor, introduce un email válido." })}
-                            />
-                            {errors.contactInfo?.email && <p className="error-message">{errors.contactInfo.email.message}</p>}
-                            <label htmlFor="phoneNumber">Número de teléfono</label>
-                            <input
-                                type="text"
-                                id="phoneNumber"
-                                className="input_text"
-                                {...register("contactInfo.phoneNumber", { required: "Por favor, introduce un número de teléfono válido." })}
-                            />
-                            {errors.contactInfo?.phoneNumber && <p className="error-message">{errors.contactInfo.phoneNumber.message}</p>}
-                        </div>
-                        <h2>Domicilio</h2>
-                        <div>
-                            <label htmlFor="street">Calle</label>
-                            <input type="text" id="street" className="input_text" {...register("address.addressLine", { required: "Por favor, introduce una calle." })} />
-                            {errors.address?.addressLine && <p className="error-message">{errors.address.addressLine.message}</p>}
-                            <label htmlFor="postalCode">Código postal</label>
-                            <input type="number" id="postalCode" className="input_text" {...register("address.postalCode", { required: "Introduce un código postal." })} />
-                            {errors.address?.postalCode && <p className="error-message">{errors.address.postalCode.message}</p>}
-                            <label htmlFor="neighborhood">Colonia</label>
-                            <input type="text" id="neighborhood" className="input_text" {...register("address.neighborhood", { required: "Por favor, introduce una colonia." })} />
-                            {errors.address?.neighborhood && <p className="error-message">{errors.address.neighborhood.message}</p>}
-                            <label htmlFor="city">Ciudad</label>
-                            <input type="text" id="city" className="input_text" {...register("address.city", { required: "Por favor, introduce una ciudad." })} />
-                            {errors.address?.city && <p className="error-message">{errors.address.city.message}</p>}
-                            <label htmlFor="state">Estado</label>
-                            <input type="text" id="state" className="input_text" {...register("address.state", { required: "Por favor, introduce un estado." })} />
-                            {errors.address?.state && <p className="error-message">{errors.address.state.message}</p>}
-                        </div>
-                        <h2>Datos de trabajo</h2>
-                        <div>
-                            <label htmlFor="hireDate">Fecha de contratacion</label>
-                            <input type="date" id="hireDate" className="input_text" {...register("employmentDetails.hiringDate", { required: "Por favor, introduce una fecha de contratacion." })} />
-                            {errors.employmentDetails?.hiringDate && <p className="error-message">{errors.employmentDetails.hiringDate.message}</p>}
-                            <label htmlFor="department">Departamento</label>
-                            <input type="text" id="department" className="input_text" {...register("employmentDetails.department", { required: "Por favor, introduce un departamento." })} />
-                            {errors.employmentDetails?.department && <p className="error-message">{errors.employmentDetails.department.message}</p>}
-                            <label htmlFor="position">Posición</label>
-                            <input type="text" id="position" className="input_text" {...register("employmentDetails.position", { required: "Por favor, introduce una posición." })} />
-                            {errors.employmentDetails?.position && <p className="error-message">{errors.employmentDetails.position.message}</p>}
-                            <label htmlFor="shift">Turno</label>
-                            <input type="text" id="shift" className="input_text" {...register("employmentDetails.shift", { required: "Por favor, introduce un turno." })} />
-                            {errors.employmentDetails?.shift && <p className="error-message">{errors.employmentDetails.shift.message}</p>}
-                            <label htmlFor="bossName">Jefe</label>
-                            <input type="text" id="bossName" className="input_text" {...register("employmentDetails.bossName", { required: "Por favor, introduce un jefe." })} />
-                            {errors.employmentDetails?.bossName && <p className="error-message">{errors.employmentDetails.bossName.message}</p>}
-                            <label htmlFor="salary">Contratado por:</label>
-                            <input type="text" id="hiredBy" className="input_text" {...register("employmentDetails.hiredBy", { required: "Introduce quien está conratando al empleado." })} />
-                            {errors.employmentDetails?.hiredBy && <p className="error-message">{errors.employmentDetails.hiredBy.message}</p>}
-                            
-                            // Si el archivo esta completo true, si no false
-                            <label htmlFor="isFileComplete">Archivo completo</label>
-                            <input type="checkbox" id="isFileComplete" className="input_text" {...register("employmentDetails.isFileComplete") } />
-                            {errors.employmentDetails?.isFileComplete && <p className="error-message checkbox">{errors.employmentDetails.isFileComplete.message}</p>}
-
-                            
-                            <label htmlFor="notes">Notas</label>
-                            <input type="text" id="notes" className="input_text" {...register("employmentDetails.notes")} />
-                            {errors.employmentDetails?.notes && <p className="error-message">{errors.employmentDetails.notes.message}</p>}
-                        </div>
-                        <h2>Contacto de emergencia</h2>
-                        <div>
-                            <label htmlFor="emergencyContactName">Nombre</label>
-                            <input type="text" id="emergencyContactName" className="input_text" {...register("emergencyContact.emergencyContactName", { required: "Por favor, introduce un nombre." })} />
-                            {errors.emergencyContact?.emergencyContactName && <p className="error-message">{errors.emergencyContact.emergencyContactName.message}</p>}
-                            <label htmlFor="emergencyPhone">Teléfono</label>
-                            <input type="text" id="emergencyPhone" className="input_text" {...register("emergencyContact.emergencyPhone", { required: "Por favor, introduce un teléfono." })} />
-                            {errors.emergencyContact?.emergencyPhone && <p className="error-message">{errors.emergencyContact.emergencyPhone.message}</p>}
-                            <label htmlFor="emergencyRelationship">Parentesco</label>
-                            <input type="text" id="emergencyRelationship" className="input_text" {...register("emergencyContact.emergencyRelationship", { required: "Por favor, introduce un parentesco." })} />
-                            {errors.emergencyContact?.emergencyRelationship && <p className="error-message">{errors.emergencyContact.emergencyRelationship.message}</p>}
-                        </div>
+                        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">Enviar</button>
                     </div>
-                    <button type="submit" className="p-2 bg-green-500 rounded-md" onClick={onCreateEmployee}>
-                        Crear Empleado
-                    </button>
-                </Form>
+                </form>
             </FormProvider>
         </div>
     );

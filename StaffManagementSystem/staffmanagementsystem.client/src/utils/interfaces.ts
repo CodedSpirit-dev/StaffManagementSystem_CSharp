@@ -1,4 +1,4 @@
-interface EmployeeData {
+interface IEmployeeData {
   socialSecurityNumber: number;
   rfc: string;
   curp: string;
@@ -58,4 +58,4 @@ interface BirthDate {
   dayOfWeek: number;
 }
 
-export type { EmployeeData };
+export type { IEmployeeData };

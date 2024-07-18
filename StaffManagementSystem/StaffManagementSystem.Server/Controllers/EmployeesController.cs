@@ -8,7 +8,6 @@ using StaffTemplate.server.Data;
 
 namespace StaffTemplate.Server.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
     public class EmployeesController : ControllerBase
     {
@@ -30,7 +29,7 @@ namespace StaffTemplate.Server.Controllers
 
         [HttpPost]
         [Route("Create")]
-        public async Task<ActionResult<Employee>> CreateEmployee([FromForm] Employee employee)
+        public async Task<ActionResult<Employee>> CreateEmployee([FromBody] Employee employee)
         {
             if (!ModelState.IsValid)
             {
@@ -64,7 +63,7 @@ namespace StaffTemplate.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateEmployee([FromForm] int id, Employee employee)
+        public async Task<IActionResult> UpdateEmployee([FromBody] int id, Employee employee)
         {
             if (id != employee.SocialSecurityNumber)
             {
