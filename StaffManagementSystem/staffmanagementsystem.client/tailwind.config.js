@@ -28,7 +28,7 @@ module.exports = {
             emphasis: colors.gray[700],
           },
           border: {
-            DEFAULT: colors.gray[200],
+            DEFAULT: colors.transparent,
           },
           ring: {
             DEFAULT: colors.gray[200],

@@ -63,7 +63,6 @@ namespace StaffManagementSystem.Server.Models
         /// Gets or sets the birth date of the employee.
         /// </summary>
         [Required(ErrorMessage = "The field {0} is required.")]
-        [RegularExpression(@"^\d{4}-\d{2}-\d{2}$", ErrorMessage = "The field {0} must be a valid date.")]
         public DateOnly BirthDate { get; set; }
 
         /// <summary>

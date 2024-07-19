@@ -1,7 +1,8 @@
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { IEmployeeData } from "../../utils/interfaces";
-import { optionsDepartment, optionsGender } from "../../utils/Dictionaries";
+import { optionsDepartment, optionsGender, optionsMaritalStatus } from "../../utils/Dictionaries";
+import axios from "axios";
 
 export const EmployeeCreate: React.FC = () => {
     const methods = useForm<IEmployeeData>();
@@ -9,6 +10,7 @@ export const EmployeeCreate: React.FC = () => {
 
     const onSubmit = (data: IEmployeeData) => {
         const formattedData = {
+            ...data,
             socialSecurityNumber: data.socialSecurityNumber,
             rfc: data.rfc,
             curp: data.curp,
@@ -16,8 +18,7 @@ export const EmployeeCreate: React.FC = () => {
             middleName: data.middleName,
             lastName: data.lastName,
             secondLastname: data.secondLastname,
-            birthDate: `${new Date(data.birthDate).getFullYear()}-${String(new Date(data.birthDate).getMonth() + 1).padStart(2, '0')}-${String(new Date(data.birthDate).getDate()).padStart(2, '0')}`,
-            gender: data.gender,
+            birthDate: new Date(data.birthDate as unknown as string).toISOString().split('T')[0],
             bloodType: data.bloodType,
             maritalStatus: data.maritalStatus,
             children: data.children,
@@ -34,6 +35,7 @@ export const EmployeeCreate: React.FC = () => {
                 state: data.address.state
             },
             employmentDetails: {
+                ...data.employmentDetails,
                 hiringDate: new Date(data.employmentDetails.hiringDate).toISOString(),
                 resignationDate: data.employmentDetails.resignationDate ? new Date(data.employmentDetails.resignationDate).toISOString() : null,
                 department: data.employmentDetails.department,
@@ -42,8 +44,8 @@ export const EmployeeCreate: React.FC = () => {
                 shift: data.employmentDetails.shift,
                 hiredBy: data.employmentDetails.hiredBy,
                 isActive: true,
+                isFileComplete: JSON.parse(String(data.employmentDetails.isFileComplete)),
                 insuranceActive: true,
-                isFileComplete: JSON.parse(data.employmentDetails.isFileComplete),
                 notes: data.employmentDetails.notes
             },
             emergencyContact: {
@@ -53,19 +55,14 @@ export const EmployeeCreate: React.FC = () => {
             }
         };
 
-        fetch("https://localhost:5173/api/Employees/Create", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(formattedData)
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log("Success:", data);
+        axios.post("https://localhost:5173/api/Employees/Create", formattedData)
+            .then(response => {
+                response.data;
+
+                window.location.href = "/lista";
             })
-            .catch((error) => {
-                console.error("Error:", error);
+            .catch(error => {
+                console.error(error);
             });
     };
 
@@ -134,8 +131,11 @@ export const EmployeeCreate: React.FC = () => {
                                         className="input_text"
                                         {...register("gender", { required: "Selecciona el sexo" })}
                                     >
-                                        <option value="male">Masculino</option>
-                                        <option value="female">Femenino</option>
+                                        {optionsGender.map((option) => (
+                                            <option key={option.value} value={option.value}>
+                                                {option.label}
+                                            </option>
+                                        ))}
                                     </select>
                                     {errors.gender && <p className="error-message">{errors.gender.message}</p>}
                                 </div>
@@ -146,14 +146,14 @@ export const EmployeeCreate: React.FC = () => {
                                         className="input_text"
                                         {...register("bloodType", { required: "Selecciona el tipo de sangre" })}
                                     >
-                                        <option value="A Positivo">A+</option>
-                                        <option value="A Negativo">A-</option>
-                                        <option value="B Positivo">B+</option>
-                                        <option value="B Negativo">B-</option>
-                                        <option value="AB Positivo">AB+</option>
-                                        <option value="AB Negativo">AB-</option>
-                                        <option value="O Positivo">O+</option>
-                                        <option value="O Negativo">O-</option>
+                                        <option value="A+">A+</option>
+                                        <option value="A-">A-</option>
+                                        <option value="B+">B+</option>
+                                        <option value="B-">B-</option>
+                                        <option value="AB+">AB+</option>
+                                        <option value="AB-">AB-</option>
+                                        <option value="O+">O+</option>
+                                        <option value="O-">O-</option>
                                         <option value="Desconocido">Desconocido</option>
                                     </select>
                                     {errors.bloodType && <p className="error-message">{errors.bloodType.message}</p>}
@@ -165,11 +165,11 @@ export const EmployeeCreate: React.FC = () => {
                                         className="input_text"
                                         {...register("maritalStatus", { required: "El estado civil es requerido" })}
                                     >
-                                        <option value="single">Soltero</option>
-                                        <option value="married">Casado</option>
-                                        <option value="widow">Viudo</option>
-                                        <option value="divorced">Divorciado</option>
-                                        <option value="otro">Otro</option>
+                                        {optionsMaritalStatus.map((option) => (
+                                            <option key={option.value} value={option.value}>
+                                                {option.label}
+                                            </option>
+                                        ))}
                                     </select>
                                     {errors.maritalStatus && <p className="error-message">{errors.maritalStatus.message}</p>}
                                 </div>
@@ -371,11 +371,16 @@ export const EmployeeCreate: React.FC = () => {
                                     {errors.employmentDetails?.hiredBy && <p className="error-message">{errors.employmentDetails.hiredBy.message}</p>}
                                 </div>
                                 <div>
-                                    <label htmlFor="employmentDetails.isFileComplete">Archivo completo</label>
-                                    <select id="employmentDetails.isFileComplete" className="input_text" {...register("employmentDetails.isFileComplete")}>
-                                        <option value={JSON.parse("true")}>Si</option>
-                                        <option value={JSON.parse("false")}>No</option>
+<label htmlFor="employmentDetails.isFileComplete">¿Archivo completo?</label>
+                                    <select
+                                        id="employmentDetails.isFileComplete"
+                                        className="input_text"
+                                        {...register("employmentDetails.isFileComplete", { required: "Por favor, selecciona si el archivo está completo." })}
+                                    >
+                                        <option value="true">Sí</option>
+                                        <option value="false">No</option>
                                     </select>
+                                    {errors.employmentDetails?.isFileComplete && <p className="error-message">{errors.employmentDetails.isFileComplete.message}</p>}
                                 </div>
                                 <div>
                                     <label htmlFor="employmentDetails.notes">Notas</label>

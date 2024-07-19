@@ -1,9 +1,9 @@
 import { Route, Routes } from 'react-router-dom';
 import EmployeeList from './pages/EmployeeList';
 import Home from './pages/Home';
-import { NavBar } from './components/NavBar';
+import { NavBar } from './components/NavBar/NavBar';
 import { EmployeeCreate } from './pages/EmployeeCreate';
-import { Footer } from './components/Footer';
+import { Footer } from './components/Footer/Footer';
 
 function App() {
         return (

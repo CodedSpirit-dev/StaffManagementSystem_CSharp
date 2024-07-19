@@ -2,7 +2,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow } fro
 import { useEffect, useState } from "react";
 import { EmployeeData } from "../../utils/interfaces";
 
-function EmployeeList() {
+function EmployeeList({ onEdit }) {
     const [employees, setEmployees] = useState<EmployeeData[]>([]);
 
     useEffect(() => {
@@ -22,6 +22,7 @@ function EmployeeList() {
                         <TableHeaderCell>Departamento</TableHeaderCell>
                         <TableHeaderCell>Activo</TableHeaderCell>
                         <TableHeaderCell>Tiene seguro</TableHeaderCell>
+                        <TableHeaderCell>Acciones</TableHeaderCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -34,6 +35,9 @@ function EmployeeList() {
                             <TableCell>{employee.employmentDetails.department}</TableCell>
                             <TableCell className="text-center">{employee.employmentDetails.isActive ? "Si" : "No"}</TableCell>
                             <TableCell className="text-center">{employee.employmentDetails.insuranceActive ? "Si" : "No"}</TableCell>
+                            <TableCell>
+                                <button onClick={() => onEdit(employee)}>Editar</button>
+                            </TableCell>
                         </TableRow>
                     )}
                 </TableBody>
