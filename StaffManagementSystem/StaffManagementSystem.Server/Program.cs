@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using StaffTemplate.server.Data;
 using StaffTemplate.server.Mappings;
 using StaffTemplate.server.Services;
+using StaffTemplate.Server.Data;
 using StaffTemplate.Shared.Services;
 
 var builder = WebApplication.CreateBuilder(args);

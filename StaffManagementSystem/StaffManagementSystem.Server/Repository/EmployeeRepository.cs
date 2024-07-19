@@ -1,6 +1,6 @@
-﻿using StaffTemplate.server.Data;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using StaffManagementSystem.Server.Models;
+using StaffTemplate.Server.Data;
 
 public class EmployeeRepository : IEmployeeRepository
 {

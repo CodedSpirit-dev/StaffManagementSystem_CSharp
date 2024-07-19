@@ -1,6 +1,7 @@
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { IEmployeeData } from "../../utils/interfaces";
+import { optionsDepartment, optionsGender } from "../../utils/Dictionaries";
 
 export const EmployeeCreate: React.FC = () => {
     const methods = useForm<IEmployeeData>();
@@ -322,13 +323,13 @@ export const EmployeeCreate: React.FC = () => {
                                 </div>
                                 <div>
                                     <label htmlFor="employmentDetails.department">Departamento</label>
-                                    <input
-                                        type="text"
-                                        id="employmentDetails.department"
-                                        className="input_text"
-                                        {...register("employmentDetails.department", { required: "El departamento es requerido" })}
-                                    />
-                                    {errors.employmentDetails?.department && <p className="error-message">{errors.employmentDetails.department.message}</p>}
+                                    <select id="employmentDetails.department" className="input_text" {...register("employmentDetails.department", { required: "El departamento es requerido" })}>
+                                        <option value="">Seleccionar</option>
+                                        {optionsDepartment.map((option) => (
+                                        (<option key={option.value} value={option.value}>{option.label}</option>
+                                        )
+                                        ))}
+                                    </select>
                                 </div>
                                 <div>
                                     <label htmlFor="employmentDetails.position">Puesto</label>

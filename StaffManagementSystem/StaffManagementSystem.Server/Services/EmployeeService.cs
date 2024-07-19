@@ -1,7 +1,7 @@
 ﻿using StaffTemplate.Shared.Services;
-using StaffTemplate.server.Data;
 using Microsoft.EntityFrameworkCore;
 using StaffManagementSystem.Server.Models;
+using StaffTemplate.Server.Data;
 
 namespace StaffTemplate.server.Services
 {
