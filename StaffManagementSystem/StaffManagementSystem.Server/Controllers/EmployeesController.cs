@@ -85,18 +85,13 @@ namespace StaffTemplate.Server.Controllers
         /// <param name="id">The ID of the employee to update.</param>
         /// <param name="employee">The updated employee data.</param>
         /// <returns>The updated employee.</returns>
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateEmployee(int id, Employee employee)
+        [HttpPut]
+        [Route("Update")]
+        public async Task<IActionResult> UpdateEmployee([FromForm] int id, Employee employee)
         {
             if (id != employee.SocialSecurityNumber)
             {
                 return BadRequest();
-            }
-
-            // Set the resignation date to the current date if the employee is not active and the resignation date is not set.
-            if (employee.EmploymentDetails.IsActive == false && !employee.EmploymentDetails.IsActive && employee.EmploymentDetails.ResignationDate == null)
-            {
-                employee.EmploymentDetails.ResignationDate = DateTime.Now;
             }
 
 

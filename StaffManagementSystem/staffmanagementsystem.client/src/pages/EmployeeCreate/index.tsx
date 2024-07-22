@@ -33,7 +33,7 @@ const EmployeeForm = ({ initialData }: { initialData: IEmployeeData | null }) =>
         };
 
         if (initialData) {
-            axios.put(`https://localhost:5173/api/Employees/${initialData.socialSecurityNumber}`, formattedData)
+            axios.put(`http://localhost:5080//api/Employees/Update`, formattedData)
                 .then(() => {
                     window.location.href = "/lista";
                 })
@@ -41,7 +41,7 @@ const EmployeeForm = ({ initialData }: { initialData: IEmployeeData | null }) =>
                     console.error(error);
                 });
         } else {
-            axios.post("https://localhost:5173/api/Employees/Create", formattedData)
+            axios.post("http://localhost:5173/api/Employees/Create", formattedData)
                 .then(() => {
                     window.location.href = "/lista";
                 })

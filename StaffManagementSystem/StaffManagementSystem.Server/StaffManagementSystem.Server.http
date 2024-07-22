@@ -4,3 +4,12 @@ GET {{StaffManagementSystem.Server_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+
+PUT {{StaffManagementSystem.Server_HostAddress}}/api/employees/Update?id=0
+Content-Type: application/json
+
+{
+  //Employee
+}
+
+###
