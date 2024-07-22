@@ -132,7 +132,11 @@ namespace StaffManagementSystem.Server.Models
         /// </summary>
         [Required(ErrorMessage = "The field {0} is required.")]
         [StringLength(200, ErrorMessage = "The field {0} must be a string with a maximum length of {1} characters.")]
-        public string AddressLine { get; set; }
+        public string Street { get; set; }
+
+        [Required(ErrorMessage = "The field {0} is required.")]
+        [StringLength(10, ErrorMessage = "The field {0} must be a string with a maximum length of {1} characters.")]
+        public string Number { get; set; }
 
         /// <summary>
         /// Gets or sets the postal code of the employee.
@@ -262,7 +266,8 @@ namespace StaffManagementSystem.Server.Models
         /// Gets or sets the notes for the employee.
         /// </summary>
         [StringLength(500, ErrorMessage = "The field {0} must be a string with a maximum length of {1} characters.")]
-        public string Notes { get; set; }
+        [AllowNull]
+        public string? Notes { get; set; }
     }
 
     /// <summary>

@@ -86,7 +86,7 @@ namespace StaffTemplate.Server.Controllers
         /// <param name="employee">The updated employee data.</param>
         /// <returns>The updated employee.</returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateEmployee([FromBody] int id, Employee employee)
+        public async Task<IActionResult> UpdateEmployee(int id, Employee employee)
         {
             if (id != employee.SocialSecurityNumber)
             {

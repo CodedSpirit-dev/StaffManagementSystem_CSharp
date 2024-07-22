@@ -1,9 +1,11 @@
 import { Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow } from "@tremor/react";
 import { useEffect, useState } from "react";
-import { EmployeeData } from "../../utils/interfaces";
+import { IEmployeeData } from "../../utils/interfaces";
+import EmployeeManagement from "../EmployeeCreate";
 
-function EmployeeList({ onEdit }) {
-    const [employees, setEmployees] = useState<EmployeeData[]>([]);
+function EmployeeList() {
+    const [employees, setEmployees] = useState<IEmployeeData[]>([]);
+    const [selectedEmployee, setSelectedEmployee] = useState<IEmployeeData | null>(null);
 
     useEffect(() => {
         FetchAllEmployees();
@@ -36,7 +38,8 @@ function EmployeeList({ onEdit }) {
                             <TableCell className="text-center">{employee.employmentDetails.isActive ? "Si" : "No"}</TableCell>
                             <TableCell className="text-center">{employee.employmentDetails.insuranceActive ? "Si" : "No"}</TableCell>
                             <TableCell>
-                                <button onClick={() => onEdit(employee)}>Editar</button>
+                                <button onClick={() => setSelectedEmployee(employee)} className="button_blue">Editar</button>
+                                <button className="button_red">Eliminar</button>
                             </TableCell>
                         </TableRow>
                     )}
@@ -49,12 +52,13 @@ function EmployeeList({ onEdit }) {
             <h1 className="text-2xl font-extrabold">Employee List</h1>
             <p>This component demonstrates fetching data from the server.</p>
             {contents}
+            {selectedEmployee && <EmployeeManagement employee={selectedEmployee} />}
         </div>
     );
 
     async function FetchAllEmployees() {
         const response = await fetch('api/Employees');
-        const data: EmployeeData[] = await response.json();
+        const data: IEmployeeData[] = await response.json();
         setEmployees(data);
     }
 }

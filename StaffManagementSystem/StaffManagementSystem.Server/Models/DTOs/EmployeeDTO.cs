@@ -94,7 +94,12 @@ namespace StaffManagementSystem.Server.Models.DTOs
         /// <summary>
         /// Gets or sets the address line of the address.
         /// </summary>
-        public string AddressLine { get; set; }
+        public string Street { get; set; }
+
+        /// <summary>
+        /// Gets or sets the number of the address.
+        /// </summary>
+        public string Number { get; set; }
 
         /// <summary>
         /// Gets or sets the postal code of the address.

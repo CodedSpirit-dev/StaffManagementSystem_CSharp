@@ -39,7 +39,8 @@ interface EmploymentDetails {
 }
 
 interface Address {
-  addressLine: string;
+  street: string;
+  number: string;
   postalCode: string;
   neighborhood: string;
   city: string;
@@ -56,6 +57,8 @@ interface BirthDate {
   month: number;
   day: number;
   dayOfWeek: number;
+  dayOfYear: number;
+  dayNumber: number;
 }
 
 export type { IEmployeeData };

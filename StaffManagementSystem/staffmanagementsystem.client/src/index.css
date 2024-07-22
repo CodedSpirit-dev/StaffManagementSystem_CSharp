@@ -80,3 +80,10 @@
     @apply text-red-500 italic;
     font-size: 0.6rem;
 }
+
+.button_blue {
+    @apply bg-blue-500 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded;
+}
+.button_red {
+    @apply bg-red-500 hover:bg-red-800 text-white font-bold py-2 px-4 rounded;
+}
