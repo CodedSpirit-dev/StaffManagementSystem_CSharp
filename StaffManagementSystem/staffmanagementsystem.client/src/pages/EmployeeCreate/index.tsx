@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { IEmployeeData } from "../../utils/interfaces";
 import { optionsDepartment, optionsGender, optionsMaritalStatus, optionsBloodType } from "../../utils/Dictionaries";
@@ -50,6 +50,7 @@ const EmployeeForm = ({ initialData }: { initialData: IEmployeeData | null }) =>
                 });
         }
     };
+
 
     return (
         <FormProvider {...methods}>
@@ -396,26 +397,11 @@ const EmployeeForm = ({ initialData }: { initialData: IEmployeeData | null }) =>
 };
 
 // Componente para la gestión del empleado
-const EmployeeManagement = () => {
-    const [initialData, setInitialData] = useState<IEmployeeData | null>(null);
-
-    useEffect(() => {
-        const employeeId = new URLSearchParams(window.location.search).get("id");
-        if (employeeId) {
-            axios.get<IEmployeeData>(`https://localhost:5173/api/Employees/${employeeId}`)
-                .then(response => {
-                    setInitialData(response.data);
-                })
-                .catch(error => {
-                    console.error("Error al cargar datos del empleado:", error);
-                });
-        }
-    }, []);
-
+const EmployeeManagement = ({ employee }: { employee: IEmployeeData }) => {
     return (
         <div>
             <h1>Gestión de Empleados</h1>
-            <EmployeeForm initialData={initialData} />
+            <EmployeeForm initialData={employee} />
         </div>
     );
 };
