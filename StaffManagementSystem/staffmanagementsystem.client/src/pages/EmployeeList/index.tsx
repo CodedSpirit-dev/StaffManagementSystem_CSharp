@@ -4,14 +4,13 @@ import { IEmployeeData } from "../../utils/interfaces";
 import EmployeeManagement from "../EmployeeCreate";
 import axios from "axios";
 
-function EmployeeList() {
+function ActiveEmployeeList() {
     const [employees, setEmployees] = useState<IEmployeeData[]>([]);
     const [selectedEmployee, setSelectedEmployee] = useState<IEmployeeData | null>(null);
 
     useEffect(() => {
         FetchAllEmployees();
     }, []);
-
 
     const formRef = useRef<HTMLDivElement>(null);
     const scrollToElement = () => {
@@ -61,7 +60,7 @@ function EmployeeList() {
 
     return (
         <div>
-            <h1 className="text-2xl font-extrabold">Employee List</h1>
+            <h1 className="text-2xl font-extrabold">Lista de Empleados Activos</h1>
             <p>This component demonstrates fetching data from the server.</p>
             {contents}
             <div ref={formRef} />
@@ -71,12 +70,19 @@ function EmployeeList() {
 
     async function FetchAllEmployees() {
         const response = await axios.get('api/Employees');
+        response.data.sort((a: { socialSecurityNumber: number; }, b: { socialSecurityNumber: number; }) => a.socialSecurityNumber - b.socialSecurityNumber);
         setEmployees(response.data);
     }
 
     async function DeactivateEmployee(employee: IEmployeeData) {
-        await axios.patch(`api/Employees/${employee.socialSecurityNumber}/deactivate/`);
+        await axios.patch(`api/Employees/${employee.socialSecurityNumber}/deactivate`);
+        // Update the state to reflect the changes
+        setEmployees(employees.map(e => 
+            e.socialSecurityNumber === employee.socialSecurityNumber 
+                ? { ...e, employmentDetails: { ...e.employmentDetails, isActive: !e.employmentDetails.isActive } }
+                : e
+        ));
     }
 }
 
-export default EmployeeList;
+export default ActiveEmployeeList;

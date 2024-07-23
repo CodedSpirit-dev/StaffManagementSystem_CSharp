@@ -1,3 +1,3 @@
 export {Home} from './Home';
-export {EmployeeList} from './EmployeeList';
-export {EmployeeCreate} from './EmployeeCreate';
+export {ActiveEmployeeList} from './EmployeeList';
+export {EmployeeManagement} from './EmployeeCreate';
