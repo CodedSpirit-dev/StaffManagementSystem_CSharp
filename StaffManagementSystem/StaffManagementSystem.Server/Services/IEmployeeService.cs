@@ -20,6 +20,8 @@ namespace StaffTemplate.Shared.Services
         /// <returns>A task that represents the asynchronous operation. The task result contains the inserted employee.</returns>
         Task<Employee> InsertEmployeeAsync(Employee employee);
 
+        Task<Employee> UpdateEmployeeAsync(Employee employee);
+
         /// <summary>
         /// Retrieves an employee by their ID.
         /// </summary>

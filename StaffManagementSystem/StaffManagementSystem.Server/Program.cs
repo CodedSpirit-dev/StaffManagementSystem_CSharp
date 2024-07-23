@@ -6,6 +6,16 @@ using StaffTemplate.Shared.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Edit CORS policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", builder => builder
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .WithOrigins("http://localhost:5000", "http://localhost:5001", "https://localhost:5173", "https://localhost:5085")
+        .AllowCredentials());
+});
+
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

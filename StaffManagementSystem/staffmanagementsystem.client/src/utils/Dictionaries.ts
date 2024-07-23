@@ -37,3 +37,16 @@ export const optionsBloodType = [
   { value: "N/A", label: "Desconocido" }
 ]
 
+export const optionsStudyGrade = [
+  {value: "Primaria", label: "Primaria"},
+  {value: "Secundaria", label: "Secundaria"},
+  {value: "Preparatoria", label: "Preparatoria"},
+  {value: "Licenciatura", label: "Licenciatura"},
+  {value: "Posgrado", label: "Posgrado"}
+]
+
+export const optionsInsuranceActive = [
+  { value: "True", label: "Activo" },
+  { value: "False", label: "Inactivo" }
+]
+

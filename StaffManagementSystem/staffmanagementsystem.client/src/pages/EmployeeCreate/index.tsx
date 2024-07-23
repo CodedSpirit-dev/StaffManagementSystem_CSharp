@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { IEmployeeData } from "../../utils/interfaces";
-import { optionsDepartment, optionsGender, optionsMaritalStatus, optionsBloodType } from "../../utils/Dictionaries";
+import { optionsDepartment, optionsGender, optionsMaritalStatus, optionsBloodType, optionsStudyGrade } from "../../utils/Dictionaries";
 import axios from "axios";
 
 const EmployeeForm = ({ initialData }: { initialData: IEmployeeData | null }) => {
@@ -13,10 +13,15 @@ const EmployeeForm = ({ initialData }: { initialData: IEmployeeData | null }) =>
     useEffect(() => {
         if (initialData) {
             for (const [key, value] of Object.entries(initialData)) {
-                setValue(key as keyof IEmployeeData, value);
+                if (key === "employmentDetails" && value.hiringDate) {
+                    setValue("employmentDetails.hiringDate", value.hiringDate.split('T')[0]); // Convertir la fecha de contratación
+                } else {
+                    setValue(key as keyof IEmployeeData, value);
+                }
             }
         }
     }, [initialData, setValue]);
+
 
     const onSubmit = (data: IEmployeeData) => {
         const formattedData = {
@@ -33,20 +38,21 @@ const EmployeeForm = ({ initialData }: { initialData: IEmployeeData | null }) =>
         };
 
         if (initialData) {
-            axios.put(`http://localhost:5080//api/Employees/Update`, formattedData)
+            axios.patch(`api/Employees/${formattedData.socialSecurityNumber}`, formattedData)
                 .then(() => {
                     window.location.href = "/lista";
                 })
                 .catch(error => {
-                    console.error(error);
+                    console.error(error.response?.data);
+                    console.log(error.response?.status);
                 });
         } else {
-            axios.post("http://localhost:5173/api/Employees/Create", formattedData)
+            axios.post("/api/Employees/", formattedData)
                 .then(() => {
                     window.location.href = "/lista";
                 })
                 .catch(error => {
-                    console.error(error);
+                    console.error(error.response?.data);
                 });
         }
     };
@@ -171,12 +177,11 @@ const EmployeeForm = ({ initialData }: { initialData: IEmployeeData | null }) =>
                                 className="input_text"
                                 {...register("studyGrade", { required: "El ultimo grado de estudios es requerido" })}
                             >
-                                <option value="primary">Primaria</option>
-                                <option value="secondary">Secundaria</option>
-                                <option value="highSchool">Bachillerato</option>
-                                <option value="university">Licenciatura</option>
-                                <option value="Masters">Maestría</option>
-                                <option value="Doctorate">Doctorado</option>
+                                {optionsStudyGrade.map((option) => (
+                                    <option key={option.value} value={option.value}>
+                                        {option.label}
+                                    </option>
+                                ))}
                             </select>
                             {errors.studyGrade && <p className="error-message">{errors.studyGrade.message}</p>}
                         </div>
@@ -390,7 +395,7 @@ const EmployeeForm = ({ initialData }: { initialData: IEmployeeData | null }) =>
                         </div>
                     </div>
                 </div>
-                <button type="submit" className="btn_primary mt-4">Enviar</button>
+                <button type="submit" className="button_blue mt-4">Enviar</button>
             </form>
         </FormProvider>
     );

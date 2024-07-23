@@ -42,6 +42,13 @@ namespace StaffTemplate.server.Services
             return employee;
         }
 
+        public async Task<Employee> UpdateEmployeeAsync(Employee employee)
+        {
+            _context.Employees.Update(employee);
+            await _context.SaveChangesAsync();
+            return employee;
+        }
+
         /// <summary>
         /// Retrieves an employee by ID asynchronously.
         /// </summary>
