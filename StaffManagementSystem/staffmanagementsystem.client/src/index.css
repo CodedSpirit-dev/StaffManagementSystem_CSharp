@@ -87,3 +87,43 @@
 .button_red {
     @apply bg-red-500 hover:bg-red-800 text-white font-bold py-2 px-4 rounded;
 }
+
+.button_blue_small {
+    @apply bg-blue-500 hover:bg-blue-800 text-white font-bold py-1 px-2 rounded flex-nowrap;
+}
+
+.button_red_small {
+    @apply bg-red-500 hover:bg-red-800 text-white font-bold py-1 px-2 rounded;
+}
+
+.button_yellow {
+    @apply bg-yellow-500 hover:bg-yellow-800 text-white font-bold py-2 px-4 rounded;
+}
+
+.button_green {
+    @apply bg-green-500 hover:bg-green-800 text-white font-bold py-2 px-4 rounded;
+}
+
+.button_green_small {
+    @apply bg-green-500 hover:bg-green-800 text-white font-bold py-1 px-2 rounded;
+}
+
+.button_yellow_small {
+    @apply bg-yellow-500 hover:bg-yellow-800 text-white font-bold py-1 px-2 rounded flex-nowrap;
+    
+}
+
+.button_blue_fixed_size {
+    @apply bg-blue-500 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded;
+    width: 155px;
+}
+
+.button_red_fixed_size {
+    @apply bg-red-500 hover:bg-red-800 text-white font-bold py-2 px-4 rounded;
+    width: 155px;
+}
+
+.button_yellow_fixed_size {
+    @apply bg-yellow-500 hover:bg-yellow-800 text-white font-bold py-2 px-4 rounded;
+    width: 155px;
+}

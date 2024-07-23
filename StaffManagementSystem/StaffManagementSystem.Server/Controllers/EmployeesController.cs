@@ -147,21 +147,42 @@ namespace StaffTemplate.Server.Controllers
                 return NotFound();
             }
 
-            employee.EmploymentDetails.IsActive = false;
-
-            using (var transaction = await _context.Database.BeginTransactionAsync())
+            if (employee.EmploymentDetails.IsActive = false) // Change to Active
             {
-                try
+                using (var transaction = await _context.Database.BeginTransactionAsync())
                 {
-                    await _employeeService.UpdateEmployeeAsync(employee);
-                    await transaction.CommitAsync();
+                    try
+                    {
+                        await _employeeService.UpdateEmployeeAsync(employee);
+                        await transaction.CommitAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        await transaction.RollbackAsync();
+                        return StatusCode(500, $"Internal server error: {ex.Message}");
+                    }
                 }
-                catch (Exception ex)
+
+            } else
+            {
+                using (var transaction = await _context.Database.BeginTransactionAsync())
                 {
-                    await transaction.RollbackAsync();
-                    return StatusCode(500, $"Internal server error: {ex.Message}");
+                    try
+                    {
+                        await _employeeService.UpdateEmployeeAsync(employee);
+                        await transaction.CommitAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        await transaction.RollbackAsync();
+                        return StatusCode(500, $"Internal server error: {ex.Message}");
+                    }
                 }
             }
+
+
+
+
 
             return Ok(employee);
         }

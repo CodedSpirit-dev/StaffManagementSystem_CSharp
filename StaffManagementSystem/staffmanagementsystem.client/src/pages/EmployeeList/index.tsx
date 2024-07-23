@@ -50,8 +50,8 @@ function EmployeeList() {
                                 <button onClick={() => {
                                     setSelectedEmployee(employee);
                                     scrollToElement();
-                                }} className="button_blue">Editar</button>
-                                <button className="button_red">Eliminar</button>
+                                }} className="button_blue_fixed_size">Editar</button>
+                                <button onClick={() => DeactivateEmployee(employee)} className="button_yellow_fixed_size">Activar/Desactivar</button>
                             </TableCell>
                         </TableRow>
                     )}
@@ -75,7 +75,7 @@ function EmployeeList() {
     }
 
     async function DeactivateEmployee(employee: IEmployeeData) {
-        await axios.put(`api/Employees/Deactivate/${employee.socialSecurityNumber}`);
+        await axios.patch(`api/Employees/${employee.socialSecurityNumber}/deactivate/`);
     }
 }
 
