@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using StaffTemplate.Server.Data;
@@ -11,9 +12,11 @@ using StaffTemplate.Server.Data;
 namespace StaffManagementSystem.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240723212956_FinishingDBDesign")]
+    partial class FinishingDBDesign
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,6 +32,9 @@ namespace StaffManagementSystem.Server.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("SocialSecurityNumber"));
+
+                    b.Property<bool>("Asegurado")
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("BirthCertificate")
                         .HasColumnType("boolean");
@@ -48,6 +54,13 @@ namespace StaffManagementSystem.Server.Migrations
 
                     b.Property<int>("Children")
                         .HasColumnType("integer");
+
+                    b.Property<string>("Estatus")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<DateTime>("FechaDeRegistro")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -100,7 +113,7 @@ namespace StaffManagementSystem.Server.Migrations
 
             modelBuilder.Entity("StaffManagementSystem.Server.Models.Employee", b =>
                 {
-                    b.OwnsOne("StaffManagementSystem.Server.Models.Employee+Address", "address", b1 =>
+                    b.OwnsOne("StaffManagementSystem.Server.Models.Address", "Address", b1 =>
                         {
                             b1.Property<int>("EmployeeSocialSecurityNumber")
                                 .HasColumnType("integer");
@@ -143,7 +156,7 @@ namespace StaffManagementSystem.Server.Migrations
                                 .HasForeignKey("EmployeeSocialSecurityNumber");
                         });
 
-                    b.OwnsOne("StaffManagementSystem.Server.Models.Employee+ContactInfo", "contactInfo", b1 =>
+                    b.OwnsOne("StaffManagementSystem.Server.Models.ContactInfo", "ContactInfo", b1 =>
                         {
                             b1.Property<int>("EmployeeSocialSecurityNumber")
                                 .HasColumnType("integer");
@@ -166,7 +179,7 @@ namespace StaffManagementSystem.Server.Migrations
                                 .HasForeignKey("EmployeeSocialSecurityNumber");
                         });
 
-                    b.OwnsOne("StaffManagementSystem.Server.Models.Employee+EmergencyContact", "emergencyContact", b1 =>
+                    b.OwnsOne("StaffManagementSystem.Server.Models.EmergencyContact", "EmergencyContact", b1 =>
                         {
                             b1.Property<int>("EmployeeSocialSecurityNumber")
                                 .HasColumnType("integer");
@@ -194,7 +207,7 @@ namespace StaffManagementSystem.Server.Migrations
                                 .HasForeignKey("EmployeeSocialSecurityNumber");
                         });
 
-                    b.OwnsOne("StaffManagementSystem.Server.Models.Employee+EmploymentDetails", "employmentDetails", b1 =>
+                    b.OwnsOne("StaffManagementSystem.Server.Models.EmploymentDetails", "EmploymentDetails", b1 =>
                         {
                             b1.Property<int>("EmployeeSocialSecurityNumber")
                                 .HasColumnType("integer");
@@ -254,9 +267,6 @@ namespace StaffManagementSystem.Server.Migrations
                                 .HasMaxLength(100)
                                 .HasColumnType("character varying(100)");
 
-                            b1.Property<DateTime>("RegistrationDate")
-                                .HasColumnType("timestamp with time zone");
-
                             b1.Property<DateTime?>("ResignationDate")
                                 .HasColumnType("timestamp with time zone");
 
@@ -273,16 +283,16 @@ namespace StaffManagementSystem.Server.Migrations
                                 .HasForeignKey("EmployeeSocialSecurityNumber");
                         });
 
-                    b.Navigation("address")
+                    b.Navigation("Address")
                         .IsRequired();
 
-                    b.Navigation("contactInfo")
+                    b.Navigation("ContactInfo")
                         .IsRequired();
 
-                    b.Navigation("emergencyContact")
+                    b.Navigation("EmergencyContact")
                         .IsRequired();
 
-                    b.Navigation("employmentDetails")
+                    b.Navigation("EmploymentDetails")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

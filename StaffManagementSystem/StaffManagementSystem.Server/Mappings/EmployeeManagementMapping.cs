@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using StaffManagementSystem.Server.Models;
 using StaffManagementSystem.Server.Models.DTOs;
+using static StaffManagementSystem.Server.Models.Employee;
 
 namespace StaffTemplate.server.Mappings
 {

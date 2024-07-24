@@ -69,7 +69,7 @@ namespace StaffTemplate.Server.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (!employee.EmploymentDetails.IsActive)
+            if (!employee.EmploymentDetails.IsActive == null)
             {
                 employee.EmploymentDetails.IsActive = true;
             }

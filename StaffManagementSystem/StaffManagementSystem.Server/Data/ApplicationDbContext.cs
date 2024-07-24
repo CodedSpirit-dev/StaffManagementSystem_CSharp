@@ -31,7 +31,6 @@ namespace StaffTemplate.Server.Data
                 .OwnsOne(e => e.Address, address =>
                 {
                     address.Property(a => a.Street).IsRequired().HasMaxLength(200);
-                    address.Property(a => a.Number).IsRequired().HasMaxLength(10);
                     address.Property(a => a.PostalCode).IsRequired().HasMaxLength(10);
                     address.Property(a => a.Neighborhood).IsRequired().HasMaxLength(100);
                     address.Property(a => a.City).IsRequired().HasMaxLength(100);
