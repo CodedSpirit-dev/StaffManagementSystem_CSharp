@@ -5,7 +5,7 @@
 namespace StaffManagementSystem.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class _5 : Migration
+    public partial class AddingEmailNull : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

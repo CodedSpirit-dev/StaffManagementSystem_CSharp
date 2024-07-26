@@ -12,8 +12,8 @@ using StaffTemplate.Server.Data;
 namespace StaffManagementSystem.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240719145810_5")]
-    partial class _5
+    [Migration("20240724154910_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -82,10 +82,6 @@ namespace StaffManagementSystem.Server.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<string>("StudyGrade")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
                     b.HasKey("SocialSecurityNumber");
 
                     b.ToTable("Employees");
@@ -98,11 +94,6 @@ namespace StaffManagementSystem.Server.Migrations
                             b1.Property<int>("EmployeeSocialSecurityNumber")
                                 .HasColumnType("integer");
 
-                            b1.Property<string>("AddressLine")
-                                .IsRequired()
-                                .HasMaxLength(200)
-                                .HasColumnType("character varying(200)");
-
                             b1.Property<string>("City")
                                 .IsRequired()
                                 .HasMaxLength(100)
@@ -113,6 +104,11 @@ namespace StaffManagementSystem.Server.Migrations
                                 .HasMaxLength(100)
                                 .HasColumnType("character varying(100)");
 
+                            b1.Property<string>("Number")
+                                .IsRequired()
+                                .HasMaxLength(10)
+                                .HasColumnType("character varying(10)");
+
                             b1.Property<string>("PostalCode")
                                 .IsRequired()
                                 .HasMaxLength(10)
@@ -122,6 +118,11 @@ namespace StaffManagementSystem.Server.Migrations
                                 .IsRequired()
                                 .HasMaxLength(100)
                                 .HasColumnType("character varying(100)");
+
+                            b1.Property<string>("Street")
+                                .IsRequired()
+                                .HasMaxLength(200)
+                                .HasColumnType("character varying(200)");
 
                             b1.HasKey("EmployeeSocialSecurityNumber");
 
@@ -143,8 +144,8 @@ namespace StaffManagementSystem.Server.Migrations
 
                             b1.Property<string>("PhoneNumber")
                                 .IsRequired()
-                                .HasMaxLength(15)
-                                .HasColumnType("character varying(15)");
+                                .HasMaxLength(20)
+                                .HasColumnType("character varying(20)");
 
                             b1.HasKey("EmployeeSocialSecurityNumber");
 
@@ -166,11 +167,10 @@ namespace StaffManagementSystem.Server.Migrations
 
                             b1.Property<string>("EmergencyPhone")
                                 .IsRequired()
-                                .HasMaxLength(15)
-                                .HasColumnType("character varying(15)");
+                                .HasMaxLength(20)
+                                .HasColumnType("character varying(20)");
 
                             b1.Property<string>("EmergencyRelationship")
-                                .IsRequired()
                                 .HasMaxLength(50)
                                 .HasColumnType("character varying(50)");
 
@@ -187,10 +187,20 @@ namespace StaffManagementSystem.Server.Migrations
                             b1.Property<int>("EmployeeSocialSecurityNumber")
                                 .HasColumnType("integer");
 
+                            b1.Property<string>("BankName")
+                                .HasMaxLength(100)
+                                .HasColumnType("character varying(100)");
+
+                            b1.Property<bool>("BirthCertificate")
+                                .HasColumnType("boolean");
+
                             b1.Property<string>("BossName")
                                 .IsRequired()
                                 .HasMaxLength(100)
                                 .HasColumnType("character varying(100)");
+
+                            b1.Property<DateOnly>("DateOfJoining")
+                                .HasColumnType("date");
 
                             b1.Property<string>("Department")
                                 .IsRequired()
@@ -202,11 +212,19 @@ namespace StaffManagementSystem.Server.Migrations
                                 .HasMaxLength(100)
                                 .HasColumnType("character varying(100)");
 
-                            b1.Property<DateTime>("HiringDate")
-                                .HasColumnType("timestamp with time zone");
+                            b1.Property<DateOnly>("HiringDate")
+                                .HasColumnType("date");
+
+                            b1.Property<bool?>("INE")
+                                .HasMaxLength(18)
+                                .HasColumnType("boolean");
 
                             b1.Property<bool>("InsuranceActive")
                                 .HasColumnType("boolean");
+
+                            b1.Property<string>("InterbankClabe")
+                                .HasMaxLength(18)
+                                .HasColumnType("character varying(18)");
 
                             b1.Property<bool>("IsActive")
                                 .HasColumnType("boolean");
@@ -214,21 +232,42 @@ namespace StaffManagementSystem.Server.Migrations
                             b1.Property<bool>("IsFileComplete")
                                 .HasColumnType("boolean");
 
+                            b1.Property<bool>("NoCriminalRecordCertificate")
+                                .HasColumnType("boolean");
+
                             b1.Property<string>("Notes")
                                 .IsRequired()
                                 .HasMaxLength(500)
                                 .HasColumnType("character varying(500)");
+
+                            b1.Property<string>("PaymentFrequency")
+                                .HasMaxLength(50)
+                                .HasColumnType("character varying(50)");
+
+                            b1.Property<string>("PayrollType")
+                                .HasMaxLength(50)
+                                .HasColumnType("character varying(50)");
 
                             b1.Property<string>("Position")
                                 .IsRequired()
                                 .HasMaxLength(100)
                                 .HasColumnType("character varying(100)");
 
-                            b1.Property<DateTime?>("ResignationDate")
-                                .HasColumnType("timestamp with time zone");
+                            b1.Property<DateOnly?>("RegistrationDate")
+                                .HasColumnType("date");
+
+                            b1.Property<DateOnly?>("ResignationDate")
+                                .HasColumnType("date");
+
+                            b1.Property<decimal>("Salary")
+                                .HasColumnType("decimal(18,2)");
 
                             b1.Property<string>("Shift")
                                 .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("character varying(50)");
+
+                            b1.Property<string>("StudyGrade")
                                 .HasMaxLength(50)
                                 .HasColumnType("character varying(50)");
 

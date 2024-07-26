@@ -16,7 +16,7 @@ namespace StaffManagementSystem.Server.Models.DTOs
         public string RFC { get; set; }
 
         /// <summary>
-        /// Gets or sets the CURP (Clave Única de Registro de Población) of the employee.
+        /// Gets or sets the CURP (Clave Ãšnica de Registro de PoblaciÃ³n) of the employee.
         /// </summary>
         public string CURP { get; set; }
 
@@ -28,7 +28,7 @@ namespace StaffManagementSystem.Server.Models.DTOs
         /// <summary>
         /// Gets or sets the middle name of the employee.
         /// </summary>
-        public string MiddleName { get; set; }
+        public string? MiddleName { get; set; }
 
         /// <summary>
         /// Gets or sets the last name of the employee.
@@ -38,7 +38,7 @@ namespace StaffManagementSystem.Server.Models.DTOs
         /// <summary>
         /// Gets or sets the second last name of the employee.
         /// </summary>
-        public string SecondLastname { get; set; }
+        public string? SecondLastname { get; set; }
 
         /// <summary>
         /// Gets or sets the birth date of the employee.
@@ -51,6 +51,11 @@ namespace StaffManagementSystem.Server.Models.DTOs
         public string Gender { get; set; }
 
         /// <summary>
+        /// Gets or sets the blood type of the employee.
+        /// </summary>
+        public string BloodType { get; set; }
+
+        /// <summary>
         /// Gets or sets the marital status of the employee.
         /// </summary>
         public string MaritalStatus { get; set; }
@@ -59,11 +64,6 @@ namespace StaffManagementSystem.Server.Models.DTOs
         /// Gets or sets the number of children of the employee.
         /// </summary>
         public int Children { get; set; }
-
-        /// <summary>
-        /// Gets or sets the study grade of the employee.
-        /// </summary>
-        public string StudyGrade { get; set; }
 
         /// <summary>
         /// Gets or sets the contact information of the employee.
@@ -91,34 +91,11 @@ namespace StaffManagementSystem.Server.Models.DTOs
     /// </summary>
     public class AddressDTO
     {
-        /// <summary>
-        /// Gets or sets the address line of the address.
-        /// </summary>
         public string Street { get; set; }
-
-        /// <summary>
-        /// Gets or sets the number of the address.
-        /// </summary>
         public string Number { get; set; }
-
-        /// <summary>
-        /// Gets or sets the postal code of the address.
-        /// </summary>
         public string PostalCode { get; set; }
-
-        /// <summary>
-        /// Gets or sets the neighborhood of the address.
-        /// </summary>
         public string Neighborhood { get; set; }
-
-        /// <summary>
-        /// Gets or sets the city of the address.
-        /// </summary>
         public string City { get; set; }
-
-        /// <summary>
-        /// Gets or sets the state of the address.
-        /// </summary>
         public string State { get; set; }
     }
 
@@ -127,14 +104,7 @@ namespace StaffManagementSystem.Server.Models.DTOs
     /// </summary>
     public class ContactInfoDTO
     {
-        /// <summary>
-        /// Gets or sets the email of the contact information.
-        /// </summary>
         public string Email { get; set; }
-
-        /// <summary>
-        /// Gets or sets the phone number of the contact information.
-        /// </summary>
         public string PhoneNumber { get; set; }
     }
 
@@ -143,49 +113,27 @@ namespace StaffManagementSystem.Server.Models.DTOs
     /// </summary>
     public class EmploymentDetailsDTO
     {
-        /// <summary>
-        /// Gets or sets the hiring date of the employment details.
-        /// </summary>
-        public DateTime HiringDate { get; set; }
-
-        /// <summary>
-        /// Gets or sets the department of the employment details.
-        /// </summary>
-        public string Department { get; set; }
-
-        /// <summary>
-        /// Gets or sets the position of the employment details.
-        /// </summary>
         public string Position { get; set; }
-
-        /// <summary>
-        /// Gets or sets the boss name of the employment details.
-        /// </summary>
+        public string Department { get; set; }
+        public DateOnly DateOfJoining { get; set; }
+        public DateTime HiringDate { get; set; }
+        public DateTime? ResignationDate { get; set; }
         public string BossName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the shift of the employment details.
-        /// </summary>
         public string Shift { get; set; }
-
-        /// <summary>
-        /// Gets or sets the name of the person who hired the employee.
-        /// </summary>
         public string HiredBy { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the employee is active or not.
-        /// </summary>
+        public string? StudyGrade { get; set; }
+        public decimal Salary { get; set; }
+        public string? BankName { get; set; }
+        public string? InterbankClabe { get; set; }
+        public string? PaymentFrequency { get; set; }
+        public string? PayrollType { get; set; }
         public bool IsActive { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the employee's file is complete or not.
-        /// </summary>
+        public bool InsuranceActive { get; set; }
         public bool IsFileComplete { get; set; }
-
-        /// <summary>
-        /// Gets or sets the notes for the employment details.
-        /// </summary>
+        public bool BirthCertificate { get; set; }
+        public bool NoCriminalRecordCertificate { get; set; }
+        public bool? INE { get; set; }
+        public DateTime? RegistrationDate { get; set; }
         public string Notes { get; set; }
     }
 
@@ -194,19 +142,8 @@ namespace StaffManagementSystem.Server.Models.DTOs
     /// </summary>
     public class EmergencyContactDTO
     {
-        /// <summary>
-        /// Gets or sets the name of the emergency contact.
-        /// </summary>
         public string EmergencyContactName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the phone number of the emergency contact.
-        /// </summary>
         public string EmergencyPhone { get; set; }
-
-        /// <summary>
-        /// Gets or sets the relationship of the emergency contact with the employee.
-        /// </summary>
-        public string EmergencyRelationship { get; set; }
+        public string? EmergencyRelationship { get; set; }
     }
 }

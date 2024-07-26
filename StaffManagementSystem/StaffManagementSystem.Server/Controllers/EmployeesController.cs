@@ -147,7 +147,7 @@ namespace StaffTemplate.Server.Controllers
                 return NotFound();
             }
 
-            if (employee.EmploymentDetails.IsActive = false) // Change to Active
+            if ((bool)(employee.EmploymentDetails.IsActive = false)) // Change to Active
             {
                 using (var transaction = await _context.Database.BeginTransactionAsync())
                 {
